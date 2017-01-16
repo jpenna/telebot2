@@ -1,29 +1,17 @@
-var botgram = require("botgram");
-var bot = botgram("266093667:AAGi5U5Rdf4Di-zwJ1aFcm7idJN7Xt7tyZw");
+const {bot} = require('./connection/connect');
+const web = require('../web/web.js');
+// const replyUser = require('../web/web.js');
+// const {io} = require('../server.js');
 
 
 
-bot.text((msg, reply, text) => {
+bot.text((msg, reply, next) => {
+  web.sendMessage(msg.text);
+
+
+  // replyUser.sendReply(reply, message);
+
   reply.text('Hello!');
+  web.sendMessage('Hello!');
+
 });
-
-
-
-// bot.command("start", "help", function (msg, reply, next) {
-//   console.log('Received START');
-//   reply.text("To schedule an alert, do: /alert <seconds> <text>");
-// });
-//
-// bot.command("alert", function (msg, reply, next) {
-//   var args = msg.args(2);
-//   var seconds = Number(args[0]), text = args[1];
-//   if (isNaN(seconds) || !text) return next();
-//
-//   setTimeout(function () {
-//     reply.text(text);
-//   }, seconds * 1000);
-// });
-//
-// bot.command(function (msg, reply, next) {
-//   reply.text("Invalid command.");
-// });
