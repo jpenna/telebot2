@@ -2,8 +2,8 @@ const {io} = require('../server.js');
 const {request} = require('https');
 
 
-function sendMessage (message) {
-  io.emit('newMessage', message);
+function sendMessage (data) {
+  io.emit('newMessage', data);
 }
 
 

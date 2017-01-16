@@ -5,28 +5,66 @@
   <title>Telebot 2</title>
 </head>
 <body>
-  <form id="inputForm">
-    <input type="text" name="message"/>
-  </form>
+
+  <div class="chat_list">
+    <ul id="chats">
+
+    </ul>
+  </div>
+
+  <div class="chat_room">
+    <div class="chat_info">
+
+    </div>
+    <div class="chat_messages">
+
+    </div>
+    <div class="chat_input">
+
+      <form id="inputForm">
+        <input type="text" name="message" autocomplete="off"/>
+      </form>
+
+    </div>
+  </div>
+
 
 </body>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
-var socket = io.connect();
+  const socket = io.connect();
 
-socket.on('newMessage', (data) => console.log(data));
-
-document.getElementById('inputForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-
-  const message = document.querySelector('input[name="message"]').value;
-
-  socket.emit('sendTelegram', message, () => {
-    document.querySelector('input[name="message"]').value = '';
+  socket.on('newMessage', (data) => {
+    console.log(data);
+    insertMessage(data.author, data.message);
   });
 
-});
+  document.getElementById('inputForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const messageInput = document.querySelector('input[name="message"]');
+    const message = messageInput.value;
+    if (!message) {
+      return;
+    }
+
+    insertMessage('Telebot', message);
+
+    socket.emit('sendTelegram', message, () => {
+      messageInput.value = '';
+    });
+
+  });
+
+
+  function insertMessage(author, message) {
+    const chat_messages = document.querySelector('.chat_messages');
+
+    const newMessage = document.createElement('div');
+    newMessage.appendChild(document.createTextNode(`${author}: ${message}`));
+    chat_messages.appendChild(newMessage);
+  }
 </script>
 
 </html>

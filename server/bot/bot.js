@@ -5,7 +5,12 @@ const botReply = require('./botReply');
 
 
 bot.text((msg, reply, next) => {
-  console.log(msg);
-  web.sendMessage(msg.text);
-  botReply.send(reply, msg.text);
+
+  const data = {
+    message: msg.text,
+    author: msg.chat.name
+  }
+
+  web.sendMessage(data);
+  botReply.send(reply, 'Hello!');
 });
