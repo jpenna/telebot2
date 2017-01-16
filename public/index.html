@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Telebot 2</title>
+</head>
+<body>
+  <form id="inputForm">
+    <input type="text" name="message"/>
+  </form>
+
+</body>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+var socket = io.connect();
+
+
+document.getElementById('inputForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const message = document.querySelector('input[name="message"]').value;
+
+  socket.emit('newMessage', message, () => {
+    document.querySelector('input[name="message"]').value = '';
+  });
+
+});
+</script>
+
+</html>
