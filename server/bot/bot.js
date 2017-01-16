@@ -1,17 +1,10 @@
 const {bot} = require('./connection/connect');
-const web = require('../web/web.js');
-// const replyUser = require('../web/web.js');
-// const {io} = require('../server.js');
+const web = require('../web/web');
+const botReply = require('./botReply');
 
 
 
 bot.text((msg, reply, next) => {
   web.sendMessage(msg.text);
-
-
-  // replyUser.sendReply(reply, message);
-
-  reply.text('Hello!');
-  web.sendMessage('Hello!');
-
+  botReply.send(reply, msg.text);
 });
