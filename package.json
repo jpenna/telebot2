@@ -1,0 +1,11 @@
+{
+  "name": "telebot2",
+  "version": "0.0.1",
+  "description": "Bot interface for Telegram messaging application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
