@@ -36,9 +36,12 @@
   const socket = io.connect();
 
   socket.on('newMessage', (data) => {
-    console.log(data);
     insertMessage(data.author, data.message);
   });
+
+  socket.on('newChat', (data) => {
+    insertChat(data.name);
+  })
 
   document.getElementById('inputForm').addEventListener('submit', (e) => {
     e.preventDefault();
@@ -64,6 +67,14 @@
     const newMessage = document.createElement('div');
     newMessage.appendChild(document.createTextNode(`${author}: ${message}`));
     chat_messages.appendChild(newMessage);
+  }
+
+  function insertChat(name) {
+    const chat_list = document.querySelector('.chat_list');
+
+    const newChat = document.createElement('button');
+    newChat.appendChild(document.createTextNode(`${name}`));
+    chat_list.appendChild(newChat);
   }
 </script>
 

@@ -1,10 +1,16 @@
 const {io} = require('../server.js');
 const {request} = require('https');
 
+web = {
+  sendMessage (data) {
+    io.emit('newMessage', data);
+  },
 
-function sendMessage (data) {
-  io.emit('newMessage', data);
-}
+  newChat (data) {
+    io.emit('newChat', data);
+  }
+
+};
 
 
 io.on('connection', (socket) => {
@@ -52,6 +58,4 @@ io.on('connection', (socket) => {
 
 });
 
-module.exports = {
-  sendMessage
-}
+module.exports = web
