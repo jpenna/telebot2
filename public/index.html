@@ -22,7 +22,7 @@ document.getElementById('inputForm').addEventListener('submit', (e) => {
 
   const message = document.querySelector('input[name="message"]').value;
 
-  socket.emit('newMessage', message, () => {
+  socket.emit('sendTelegram', message, () => {
     document.querySelector('input[name="message"]').value = '';
   });
 
