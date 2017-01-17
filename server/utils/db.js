@@ -16,7 +16,7 @@ const db = {
 
   insertMessage(data) {
     const chatId = data.chat_id;
-    const messageData = _.pick(data, ['author', 'message', 'sentAt']);
+    const messageData = _.pick(data, ['author', 'message', 'sentAt', 'type']);
 
     const message = new Message(messageData);
 

@@ -11,7 +11,7 @@ bot.command("start", (msg, reply, next) => {
   const chat = msg.chat;
 
   web.newChat(chat);
-  botReply.send(reply, 'Welcome!');
+  botReply.send(reply, msg, 'Welcome!');
 
   db.insertChat({
     chat_id: chat.id,
@@ -36,5 +36,5 @@ bot.text((msg, reply, next) => {
 
   db.insertMessage(data);
   web.sendMessage(data);
-  botReply.send(reply, 'Hello!');
+  botReply.send(reply, msg, 'Hello!');
 });
