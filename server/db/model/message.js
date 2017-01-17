@@ -1,4 +1,4 @@
-const mongoose = require('../mongoose');
+const {mongoose} = require('../mongoose');
 
 const messageSchema = mongoose.Schema({
   author: {
@@ -9,13 +9,13 @@ const messageSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  type: String,
   sentAt: {
     type: Date,
     required: true,
     default: Date.now
+  }
 });
 
-const message = mongoose.model('Message', messageSchema);
+const Message = mongoose.model('Message', messageSchema);
 
-module.exports = {message};
+module.exports = {Message};
