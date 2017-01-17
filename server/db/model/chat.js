@@ -1,4 +1,5 @@
 const {mongoose} = require('../mongoose');
+const _ = require('lodash');
 
 const chatSchema = mongoose.Schema({
   chat_id: {
@@ -11,6 +12,12 @@ const chatSchema = mongoose.Schema({
   lastname: String,
   messages: []
 });
+
+chatSchema.methods.toJSON = function () {
+  const chat = this;
+  const chatObject = chat.toObject();
+  return _.pick(chatObject, ['chat_id', 'type', 'firstname', 'lastname', 'messages']);
+}
 
 const Chat = mongoose.model('Chat', chatSchema);
 

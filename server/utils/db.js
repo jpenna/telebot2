@@ -26,8 +26,18 @@ const db = {
         if (err)
           console.log(err)
       });
+  },
+
+  findChats() {
+    return Chat.find({}).exec((err, data) => {
+      if (err) {
+        reject(err);
+      }
+
+      return data;
+    });
   }
 
 }
 
-module.exports = db;
+module.exports = {db};

@@ -1,5 +1,6 @@
 const {io} = require('../server.js');
 const {request} = require('https');
+const {db} = require('../utils/db');
 
 web = {
   // send message to web interface
@@ -16,6 +17,27 @@ web = {
 
 
 io.on('connection', (socket) => {
+
+  db.findChats().then((chats) => {
+
+    let data;
+
+    if (!chats) {
+      data = null;
+    } else {
+      // don't send messages from chats user isn't seeing
+      data = chats.map((obj, key) => {
+        const msg = obj;
+        if (key !== 0) {
+          msg.messages = {};
+        }
+        return msg;
+      });
+    }
+
+    socket.emit('populateChats', data);
+
+  }).catch((err) => console.log(err));
 
   // send message to user on Telegram
   socket.on('sendTelegram', (data, callback) => {

@@ -3,7 +3,7 @@
 const {bot} = require('./connection/connect');
 const web = require('../web/web');
 const botReply = require('./botReply');
-const db = require('../utils/db');
+const {db} = require('../utils/db');
 
 // handles /start command
 bot.command("start", (msg, reply, next) => {

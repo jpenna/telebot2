@@ -41,6 +41,10 @@
 
   socket.on('newChat', (data) => {
     insertChat(data.name);
+  });
+
+  socket.on('populateChats', (data) => {
+    console.log(data);
   })
 
   document.getElementById('inputForm').addEventListener('submit', (e) => {
