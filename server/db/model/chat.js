@@ -16,7 +16,8 @@ const chatSchema = mongoose.Schema({
 chatSchema.methods.toJSON = function () {
   const chat = this;
   const chatObject = chat.toObject();
-  return _.pick(chatObject, ['chat_id', 'type', 'firstname', 'lastname', 'messages']);
+  chatObject.fullname = `${this.firstname} ${this.lastname}`;
+  return _.pick(chatObject, ['chat_id', 'type', 'firstname', 'lastname', 'messages', 'fullname']);
 }
 
 const Chat = mongoose.model('Chat', chatSchema);

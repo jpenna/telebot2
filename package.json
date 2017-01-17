@@ -16,6 +16,7 @@
     "botgram": "^2.0.0-beta2",
     "express": "^4.14.0",
     "lodash": "^4.17.4",
+    "moment": "^2.17.1",
     "mongoose": "^4.7.7",
     "socket.io": "^1.7.2"
   }

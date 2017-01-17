@@ -1,4 +1,5 @@
 const {mongoose} = require('../mongoose');
+const _ = require('lodash');
 
 const messageSchema = mongoose.Schema({
   author: {
@@ -16,6 +17,12 @@ const messageSchema = mongoose.Schema({
   },
   type: String
 });
+
+messageSchema.methods.toJSON = function () {
+  const msg = this;
+  const msgObject = msg.toObject();
+  return _.pick(msgObject, ['author', 'message', 'sentAt', 'type']);
+}
 
 const Message = mongoose.model('Message', messageSchema);
 

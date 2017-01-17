@@ -35,7 +35,7 @@ io.on('connection', (socket) => {
       });
     }
 
-    socket.emit('populateChats', data);
+    socket.emit('populateChats', {chats: data});
 
   }).catch((err) => console.log(err));
 

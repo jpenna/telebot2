@@ -32,6 +32,7 @@
 </body>
 
 <script src="/socket.io/socket.io.js"></script>
+<script src="/script/lib/moment/min/moment-with-locales.min.js"></script>
 <script>
   const socket = io.connect();
 
@@ -44,7 +45,19 @@
   });
 
   socket.on('populateChats', (data) => {
-    console.log(data);
+    const chats = data.chats;
+
+    if (!chats) {
+      console.log('You are alone, Mister! No chats for you. SHAME on your loneliness!');
+    }
+
+    chats.forEach((chat, key) => {
+      insertChat(chat.fullname);
+    });
+
+    chats[0].messages.forEach((msg, key) => {
+      insertMessage(`${moment(msg.sentAt).locale('pt-br').format('HH:mm')} - ${msg.author}`, msg.message);
+    })
   })
 
   document.getElementById('inputForm').addEventListener('submit', (e) => {
