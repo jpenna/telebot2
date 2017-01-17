@@ -3,8 +3,13 @@
   "version": "0.0.1",
   "description": "Bot interface for Telegram messaging application",
   "main": "index.js",
+  "engines": {
+    "node": "6.9.2"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server/server.js",
+    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha */tests/**.tests.js",
+    "test-watch": "nodemon --exec 'npm test'"
   },
   "author": "",
   "license": "ISC",

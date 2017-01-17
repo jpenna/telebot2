@@ -6,6 +6,11 @@ module.exports = {
         "import"
     ],
     "rules": {
-      "no-console": "off"
+      "no-console": "off",
+      "import/no-extraneous-dependencies": "off",
+      "consistent-return": "off"
+    },
+    "env": {
+      "mocha": true
     }
 };
