@@ -1,12 +1,12 @@
 /* Bot app */
 
-const {bot} = require('./connection/connect');
+const { bot } = require('./connection/connect');
 const web = require('../web/web');
 const botReply = require('./botReply');
-const {db} = require('../utils/db');
+const { db } = require('../utils/db');
 
 // handles /start command
-bot.command("start", (msg, reply, next) => {
+bot.command('start', (msg, reply) => {
   console.log(msg);
   const chat = msg.chat;
 
@@ -17,12 +17,12 @@ bot.command("start", (msg, reply, next) => {
     chat_id: chat.id,
     type: chat.type,
     firstname: chat.firstname,
-    lastname: chat.lastname
+    lastname: chat.lastname,
   });
 });
 
 // handles text messages
-bot.text((msg, reply, next) => {
+bot.text((msg, reply) => {
   console.log(msg);
 
   const chat = msg.chat;
@@ -31,8 +31,8 @@ bot.text((msg, reply, next) => {
     chat_id: chat.id,
     author: chat.firstname,
     message: msg.text,
-    sentAt: new Date().getTime()
-  }
+    sentAt: new Date().getTime(),
+  };
 
   db.insertMessage(data);
   web.sendMessage(data);

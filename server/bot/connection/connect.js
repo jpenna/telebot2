@@ -1,13 +1,9 @@
 /* Connect to Telegram */
+const botgram = require('botgram');
 
-var botgram = require("botgram");
-var bot = botgram("266093667:AAGi5U5Rdf4Di-zwJ1aFcm7idJN7Xt7tyZw");
+const bot = botgram('266093667:AAGi5U5Rdf4Di-zwJ1aFcm7idJN7Xt7tyZw');
 
-module.exports = {bot};
-
-
-
-
+module.exports = { bot };
 
 // bot.command("start", "help", function (msg, reply, next) {
 //   console.log('Received START');

@@ -32,7 +32,7 @@ const db = {
   findChats() {
     return Chat.find({}).exec((err, data) => {
       if (err) {
-        return reject(err);
+        return console.log(err);
       }
 
       return data;
@@ -42,7 +42,7 @@ const db = {
   findChatMessages(chatId) {
     return Chat.findOne({ chat_id: chatId }).exec((err, data) => {
       if (err) {
-        return reject(err);
+        return console.log(err);
       }
       return data;
     });
