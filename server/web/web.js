@@ -2,10 +2,12 @@ const {io} = require('../server.js');
 const {request} = require('https');
 
 web = {
+  // send message to web interface
   sendMessage (data) {
     io.emit('newMessage', data);
   },
 
+  // send chat to chat list in web interface
   newChat (data) {
     io.emit('newChat', data);
   }
@@ -15,14 +17,13 @@ web = {
 
 io.on('connection', (socket) => {
 
+  // send message to user on Telegram
   socket.on('sendTelegram', (data, callback) => {
 
-    const postJSON = {
+    const postData = JSON.stringify({
       chat_id: 231095546,
       text: data
-    };
-
-    const postData = JSON.stringify(postJSON);
+    });
 
     var options = {
       hostname: 'api.telegram.org',
@@ -53,6 +54,7 @@ io.on('connection', (socket) => {
 
     req.end();
 
+    // run callback from client socket
     callback();
   });
 
