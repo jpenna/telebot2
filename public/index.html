@@ -34,79 +34,90 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/script/lib/moment/moment-with-locales.min.js"></script>
 <script>
-  const socket = io.connect();
+const socket = io.connect();
+let chatId;
 
-  socket.on('newMessage', (data) => {
-    insertMessage(data.author, data.message);
+socket.emit('getChats');
+
+socket.on('newMessage', (msg) => {
+  insertMessage(`${moment(msg.sentAt).locale('pt-br').format('HH:mm')} - ${msg.author}`, msg.message);
+});
+
+socket.on('newChat', (data) => {
+  insertChat(data.name);
+});
+
+socket.on('populateChats', (data) => {
+  const chats = data.chats;
+
+  if (!chats) {
+    console.log('You are alone, Mister! No chats for you. SHAME on your loneliness!');
+  }
+
+  chats.forEach((chat, key) => {
+    insertChat(chat.fullname, chat.chat_id);
   });
 
-  socket.on('newChat', (data) => {
-    insertChat(data.name);
+  chats[0].messages.forEach((msg, key) => {
+    insertMessage(`${moment(msg.sentAt).locale('pt-br').format('HH:mm')} - ${msg.author}`, msg.message);
   });
 
-  socket.on('populateChats', (data) => {
-    const chats = data.chats;
+  chatId = chats[0].chat_id;
+});
 
-    if (!chats) {
-      console.log('You are alone, Mister! No chats for you. SHAME on your loneliness!');
-    }
+socket.on('populateChatMessages', (data) => {
+  const messages = data.messages;
 
-    chats.forEach((chat, key) => {
-      insertChat(chat.fullname, chat.chat_id);
-    });
+  messages.forEach((msg, key) => {
+    insertMessage(`${moment(msg.sentAt).locale('pt-br').format('HH:mm')} - ${msg.author}`, msg.message)
+  });
+});
 
-    chats[0].messages.forEach((msg, key) => {
-      insertMessage(`${moment(msg.sentAt).locale('pt-br').format('HH:mm')} - ${msg.author}`, msg.message);
-    })
+document.getElementById('inputForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const messageInput = document.querySelector('input[name="message"]');
+  const message = messageInput.value;
+  if (!message) {
+    return;
+  }
+
+  insertMessage('Telebot', message);
+
+  const data = {
+    message: message,
+    chat_id: chatId
+  }
+
+  socket.emit('sendTelegram', data, () => {
+    messageInput.value = '';
   });
 
-  socket.on('populateChatMessages', (data) => {
-    const messages = data.messages;
-
-    messages.forEach((msg, key) => {
-      insertMessage(`${moment(msg.sentAt).locale('pt-br').format('HH:mm')} - ${msg.author}`, msg.message)
-    });
-  });
-
-  document.getElementById('inputForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const messageInput = document.querySelector('input[name="message"]');
-    const message = messageInput.value;
-    if (!message) {
-      return;
-    }
-
-    insertMessage('Telebot', message);
-
-    socket.emit('sendTelegram', message, () => {
-      messageInput.value = '';
-    });
-
-  });
+});
 
 
-  function insertMessage(author, message) {
+function insertMessage(author, message) {
+  const chat_messages = document.querySelector('.chat_messages');
+
+  const newMessage = document.createElement('div');
+  newMessage.appendChild(document.createTextNode(`${moment(new Date()).locale('pt-br').format('HH:mm')} - Telebot: ${message}`));
+  chat_messages.appendChild(newMessage);
+}
+
+function insertChat(name, chat_id) {
+  const chat_list = document.querySelector('.chat_list');
+
+  const newChat = document.createElement('button');
+  newChat.setAttribute('data-id', chat_id)
+  newChat.addEventListener('click', function () {
     const chat_messages = document.querySelector('.chat_messages');
-
-    const newMessage = document.createElement('div');
-    newMessage.appendChild(document.createTextNode(`${author}: ${message}`));
-    chat_messages.appendChild(newMessage);
-  }
-
-  function insertChat(name, chat_id) {
-    const chat_list = document.querySelector('.chat_list');
-
-    const newChat = document.createElement('button');
-    newChat.setAttribute('data-id', chat_id)
-    newChat.addEventListener('click', function () {
-      const chat_messages = document.querySelector('.chat_messages');
-      chat_messages.innerHTML = '';
-      socket.emit('getChatMessages', this.getAttribute('data-id'));
-    });
-    newChat.appendChild(document.createTextNode(`${name}`));
-    chat_list.appendChild(newChat);
-  }
+    chat_messages.innerHTML = '';
+    chatId = this.getAttribute('data-id');
+    socket.emit('getChatMessages', this.getAttribute('data-id'));
+  });
+  newChat.appendChild(document.createTextNode(`${name}`));
+  chat_list.appendChild(newChat);
+}
 </script>
 
 </html>

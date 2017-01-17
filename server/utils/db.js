@@ -5,7 +5,6 @@ const _ = require('lodash');
 const db = {
   insertChat(data) {
     const chatData = _.pick(data, ['chat_id', 'type', 'firstname', 'lastname']);
-
     const chat = new Chat(chatData);
     return chat.save();
   },

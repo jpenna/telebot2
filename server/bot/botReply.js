@@ -19,7 +19,7 @@ function send(reply, msg, replyMessage) {
     sentAt: new Date().getTime(),
   };
   web.sendMessage(data);
-  db.insertMessage(data);
+  db.insertMessage(chat.id, data);
 }
 
 module.exports = { send };

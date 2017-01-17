@@ -16,36 +16,38 @@ const web = {
 };
 
 io.on('connection', (socket) => {
-  db.findChats().then((chats) => {
-    let data;
 
-    if (!chats) {
-      data = null;
-    } else {
-      // don't send messages from chats user isn't seeing
-      data = chats.map((obj, key) => {
-        const msg = obj;
-        if (key !== 0) {
-          msg.messages = {};
-        }
-        return msg;
-      });
-    }
-
-    socket.emit('populateChats', { chats: data });
-  }).catch(err => console.log(err));
+  socket.on('getChats', () => {
+    db.findChats().then((chats) => {
+      let data;
+      if (!chats) {
+        data = null;
+      } else {
+        // don't send messages from chats user isn't seeing
+        data = chats.map((obj, key) => {
+          const msg = obj;
+          if (key !== 0) {
+            msg.messages = {};
+          }
+          return msg;
+        });
+      }
+      socket.emit('populateChats', { chats: data });
+    }).catch(err => console.log(err));
+  });
 
   socket.on('getChatMessages', (chatId) => {
-    db.findChatMessages(chatId).then((data) => {
+    db.findChatById(chatId).then((data) => {
       socket.emit('populateChatMessages', { messages: data.messages });
     }).catch(err => console.log(err));
   });
 
   // send message to user on Telegram
   socket.on('sendTelegram', (data, callback) => {
+
     const postData = JSON.stringify({
-      chat_id: 231095546,
-      text: data,
+      chat_id: data.chat_id,
+      text: data.message,
     });
 
     const options = {
@@ -60,11 +62,24 @@ io.on('connection', (socket) => {
     };
 
     const req = request(options, (res) => {
-      console.log('statusCode:', res.statusCode);
-      console.log('headers:', res.headers);
+      // console.log('statusCode:', res.statusCode);
+      // console.log('headers:', res.headers);
+      let body = '';
 
       res.on('data', (d) => {
-        process.stdout.write(d);
+        body += d;
+      });
+
+      res.on('end', () => {
+        body = JSON.parse(body);
+        if (body.ok) {
+          const message = {
+            author: 'Telebot',
+            message: data.message,
+          }
+
+          db.insertMessage(data.chat_id, message);
+        }
       });
     });
 
@@ -80,5 +95,6 @@ io.on('connection', (socket) => {
     callback();
   });
 });
+
 
 module.exports = web;

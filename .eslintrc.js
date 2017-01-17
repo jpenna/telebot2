@@ -8,7 +8,9 @@ module.exports = {
     "rules": {
       "no-console": "off",
       "import/no-extraneous-dependencies": "off",
-      "consistent-return": "off"
+      "consistent-return": "off",
+      "no-trailing-spaces":"off",
+      "padded-blocks": "off"
     },
     "env": {
       "mocha": true

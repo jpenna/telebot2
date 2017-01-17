@@ -7,14 +7,12 @@ const { db } = require('../utils/db');
 
 // handles /start command
 bot.command('start', (msg, reply) => {
-  console.log(msg);
   const chat = msg.chat;
 
   web.newChat(chat);
   botReply.send(reply, msg, 'Welcome!');
 
-  db.insertChat({
-    chat_id: chat.id,
+  db.insertChat(chat.id, {
     type: chat.type,
     firstname: chat.firstname,
     lastname: chat.lastname,
@@ -23,8 +21,6 @@ bot.command('start', (msg, reply) => {
 
 // handles text messages
 bot.text((msg, reply) => {
-  console.log(msg);
-
   const chat = msg.chat;
 
   const data = {
@@ -34,7 +30,7 @@ bot.text((msg, reply) => {
     sentAt: new Date().getTime(),
   };
 
-  db.insertMessage(data);
+  db.insertMessage(chat.id, data);
   web.sendMessage(data);
   botReply.send(reply, msg, 'Hello!');
 });
