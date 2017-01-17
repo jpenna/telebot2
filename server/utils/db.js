@@ -1,16 +1,15 @@
-const {Chat} = require('../db/model/chat');
-const {Message} = require('../db/model/message');
+const { Chat } = require('../db/model/chat');
+const { Message } = require('../db/model/message');
 const _ = require('lodash');
 
 const db = {
-  insertChat (data) {
-
+  insertChat(data) {
     const chatData = _.pick(data, ['chat_id', 'type', 'firstname', 'lastname']);
 
     const chat = new Chat(chatData);
-    chat.save(function (err) {
+    chat.save((err) => {
       if (err) return console.log(err);
-      console.log('chat saved');
+      return console.log('chat saved');
     });
   },
 
@@ -21,23 +20,33 @@ const db = {
     const message = new Message(messageData);
 
     Chat.findOneAndUpdate({ chat_id: chatId },
-      { $push: { messages: message }}, { upsert: true },
+      { $push: { messages: message } },
+      { upsert: true },
       (err) => {
-        if (err)
-          console.log(err)
+        if (err) {
+          console.log(err);
+        }
       });
   },
 
   findChats() {
     return Chat.find({}).exec((err, data) => {
       if (err) {
-        reject(err);
+        return reject(err);
       }
 
       return data;
     });
-  }
+  },
 
-}
+  findChatMessages(chatId) {
+    return Chat.findOne({ chat_id: chatId }).exec((err, data) => {
+      if (err) {
+        return reject(err);
+      }
+      return data;
+    });
+  },
+};
 
-module.exports = {db};
+module.exports = { db };

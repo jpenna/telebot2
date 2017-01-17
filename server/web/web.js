@@ -1,25 +1,22 @@
-const {io} = require('../server.js');
-const {request} = require('https');
-const {db} = require('../utils/db');
+const { io } = require('../server.js');
+const { request } = require('https');
+const { db } = require('../utils/db');
 
-web = {
+const web = {
   // send message to web interface
-  sendMessage (data) {
+  sendMessage(data) {
     io.emit('newMessage', data);
   },
 
   // send chat to chat list in web interface
-  newChat (data) {
+  newChat(data) {
     io.emit('newChat', data);
-  }
+  },
 
 };
 
-
 io.on('connection', (socket) => {
-
   db.findChats().then((chats) => {
-
     let data;
 
     if (!chats) {
@@ -35,31 +32,34 @@ io.on('connection', (socket) => {
       });
     }
 
-    socket.emit('populateChats', {chats: data});
+    socket.emit('populateChats', { chats: data });
+  }).catch(err => console.log(err));
 
-  }).catch((err) => console.log(err));
+  socket.on('getChatMessages', (chatId) => {
+    db.findChatMessages(chatId).then((data) => {
+      socket.emit('populateChatMessages', { messages: data.messages });
+    }).catch(err => console.log(err));
+  });
 
   // send message to user on Telegram
   socket.on('sendTelegram', (data, callback) => {
-
     const postData = JSON.stringify({
       chat_id: 231095546,
-      text: data
+      text: data,
     });
 
-    var options = {
+    const options = {
       hostname: 'api.telegram.org',
       port: 443,
       path: '/bot266093667:AAGi5U5Rdf4Di-zwJ1aFcm7idJN7Xt7tyZw/sendMessage',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(postData)
-      }
+        'Content-Length': Buffer.byteLength(postData),
+      },
     };
 
-    var req = request(options, (res) => {
-
+    const req = request(options, (res) => {
       console.log('statusCode:', res.statusCode);
       console.log('headers:', res.headers);
 
@@ -79,7 +79,6 @@ io.on('connection', (socket) => {
     // run callback from client socket
     callback();
   });
-
 });
 
-module.exports = web
+module.exports = web;

@@ -52,13 +52,21 @@
     }
 
     chats.forEach((chat, key) => {
-      insertChat(chat.fullname);
+      insertChat(chat.fullname, chat.chat_id);
     });
 
     chats[0].messages.forEach((msg, key) => {
       insertMessage(`${moment(msg.sentAt).locale('pt-br').format('HH:mm')} - ${msg.author}`, msg.message);
     })
-  })
+  });
+
+  socket.on('populateChatMessages', (data) => {
+    const messages = data.messages;
+
+    messages.forEach((msg, key) => {
+      insertMessage(`${moment(msg.sentAt).locale('pt-br').format('HH:mm')} - ${msg.author}`, msg.message)
+    });
+  });
 
   document.getElementById('inputForm').addEventListener('submit', (e) => {
     e.preventDefault();
@@ -86,10 +94,16 @@
     chat_messages.appendChild(newMessage);
   }
 
-  function insertChat(name) {
+  function insertChat(name, chat_id) {
     const chat_list = document.querySelector('.chat_list');
 
     const newChat = document.createElement('button');
+    newChat.setAttribute('data-id', chat_id)
+    newChat.addEventListener('click', function () {
+      const chat_messages = document.querySelector('.chat_messages');
+      chat_messages.innerHTML = '';
+      socket.emit('getChatMessages', this.getAttribute('data-id'));
+    });
     newChat.appendChild(document.createTextNode(`${name}`));
     chat_list.appendChild(newChat);
   }
