@@ -1,0 +1,44 @@
+$background-color: #E1F5FE
+$dark-blue: #0D212B
+$login-blue: #237377
+
+$blueDefault: #3e9db7
+$blueTag: #0e657c
+
+$ubuntu-light: 300
+$ubuntu-regular: 400
+$ubuntu-medium: 500
+
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:300,400,500')
+
+html
+  background-color: transparent
+
+body
+  cursor: default
+  background-color: $background-color
+
+button
+  cursor: pointer
+
+.no-margin-bot
+  margin-bottom: 0 !important
+
+.is-50x50
+  height: 50px !important
+  width: 50px !important
+
+.no-flex-grow
+  flex-grow: 0
+
+.no-button
+  background: none
+  border: none
+  outline: none
+
+
+//Bulma modifiers
+.content p:not(:last-child)
+  margin-bottom: 0
+
+

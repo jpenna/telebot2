@@ -1,0 +1,32 @@
+@import url("https://fonts.googleapis.com/css?family=Ubuntu:300,400,500");
+html {
+  background-color: transparent; }
+
+body {
+  cursor: default;
+  background-color: #E1F5FE; }
+
+button {
+  cursor: pointer; }
+
+.no-margin-bot {
+  margin-bottom: 0 !important; }
+
+.is-50x50 {
+  height: 50px !important;
+  width: 50px !important; }
+
+.no-flex-grow {
+  flex-grow: 0; }
+
+.no-button {
+  background: none;
+  border: none;
+  outline: none; }
+
+.avatar-image {
+  border-radius: 50%;
+  border: #d2d2d2 1px solid;
+  box-shadow: #eaeaea 1px 1px 5px; }
+
+/*# sourceMappingURL=utils.css.map */

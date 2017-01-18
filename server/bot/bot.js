@@ -26,6 +26,7 @@ bot.text((msg, reply) => {
   const data = {
     chat_id: chat.id,
     author: chat.firstname,
+    type: 'client',
     message: msg.text,
     sentAt: new Date().getTime(),
   };

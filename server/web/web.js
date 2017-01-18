@@ -27,7 +27,9 @@ io.on('connection', (socket) => {
         data = chats.map((obj, key) => {
           const msg = obj;
           if (key !== 0) {
-            msg.messages = {};
+            msg.messages = [
+              msg.messages[msg.messages.length - 1],
+            ];
           }
           return msg;
         });
@@ -43,10 +45,11 @@ io.on('connection', (socket) => {
   });
 
   // send message to user on Telegram
-  socket.on('sendTelegram', (data, callback) => {
+  socket.on('sendTelegram', (data) => {
 
     const postData = JSON.stringify({
       chat_id: data.chat_id,
+      type: data.type,
       text: data.message,
     });
 
@@ -92,7 +95,7 @@ io.on('connection', (socket) => {
     req.end();
 
     // run callback from client socket
-    callback();
+    // callback();
   });
 });
 

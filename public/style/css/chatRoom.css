@@ -1,0 +1,224 @@
+@import url("https://fonts.googleapis.com/css?family=Ubuntu:300,400,500");
+html {
+  background-color: transparent; }
+
+body {
+  cursor: default;
+  background-color: #E1F5FE; }
+
+button {
+  cursor: pointer; }
+
+.no-margin-bot {
+  margin-bottom: 0 !important; }
+
+.is-50x50 {
+  height: 50px !important;
+  width: 50px !important; }
+
+.no-flex-grow {
+  flex-grow: 0; }
+
+.no-button {
+  background: none;
+  border: none;
+  outline: none; }
+
+.content p:not(:last-child) {
+  margin-bottom: 0; }
+
+body {
+  font-weight: 300; }
+
+.column {
+  margin: 0 !important;
+  padding: 0 !important; }
+
+.panel {
+  margin: 0 !important;
+  border: none; }
+
+.panel-block {
+  border-bottom: none !important;
+  width: 100%; }
+
+.level {
+  margin-bottom: 0 !important; }
+
+.telebot-app {
+  position: absolute;
+  margin: auto !important;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  max-height: 95%;
+  padding: 0; }
+
+.avatar-image {
+  border-radius: 50%;
+  border: #d2d2d2 1px solid;
+  box-shadow: #eaeaea 1px 1px 5px;
+  max-width: 89px; }
+
+.chat-list {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  display: flex;
+  flex-direction: column; }
+
+.chat-list-heading {
+  line-height: 62px;
+  padding: 0;
+  padding-left: 20px;
+  background-color: #0e657c;
+  color: whitesmoke;
+  border-radius: 0;
+  border-top-left-radius: inherit; }
+
+.preview-button:hover {
+  background-color: rgba(204, 229, 236, 0.42); }
+  .preview-button:hover img {
+    border: none;
+    box-shadow: none; }
+
+.active-chat {
+  background-color: #cce5ec; }
+  .active-chat img {
+    border: none;
+    box-shadow: none; }
+  .active-chat:hover {
+    background-color: #cce5ec; }
+
+.preview-name {
+  color: #3e9db7;
+  font-weight: 400; }
+
+.preview-text {
+  font-size: 0.8rem;
+  font-weight: 300; }
+
+.preview-time {
+  font-size: 10px;
+  font-weight: 300; }
+
+.messages-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column; }
+
+.chat-list-overflow {
+  overflow: auto;
+  border-right: 1px solid #dbdbdb;
+  flex-grow: 1; }
+
+.header-container {
+  border-bottom: 1px solid #dbdbdb; }
+
+.chat-name {
+  line-height: 30px;
+  text-align: right;
+  padding: 16px 4% 16px;
+  background-color: #0e657c;
+  font-weight: 400;
+  color: whitesmoke;
+  border-top-right-radius: 5px; }
+
+.messages-container {
+  overflow-y: overlay;
+  flex-grow: 1; }
+
+.media + .media {
+  border-top: none; }
+
+.message-box {
+  padding: 18px 10% !important;
+  position: relative; }
+
+.msg-content {
+  padding-left: 3%; }
+
+.message-info {
+  line-height: 2.4rem; }
+
+.client-name {
+  color: #56a9c0;
+  font-size: 1.18rem;
+  font-weight: 400; }
+
+.is-orange {
+  color: #f99d13; }
+
+.message-text {
+  font-size: 0.95rem;
+  padding-right: 8%; }
+
+.tag.is-dark-blue {
+  background-color: #0e657c;
+  color: whitesmoke; }
+
+.tag.bot-small {
+  font-size: 9px;
+  height: 15px;
+  padding-left: 6px;
+  padding-right: 6px;
+  font-weight: 500; }
+
+.input-container {
+  padding: 12px 0 10px;
+  margin: 0 27px;
+  border-top: 1px solid #dbdbdb;
+  display: flex; }
+
+.textbox {
+  border: none;
+  box-shadow: none;
+  border-bottom: 1px solid #dbdbdb;
+  min-height: 73px;
+  font-size: 0.8rem;
+  width: auto;
+  min-width: 83%;
+  margin: auto;
+  display: inline-block;
+  vertical-align: middle; }
+  .textbox:focus {
+    font-size: 1rem; }
+
+.send-button-container {
+  margin-left: 10px !important;
+  vertical-align: middle; }
+
+.send-button {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-top-right-radius: 11px;
+  border-bottom-right-radius: 11px;
+  outline: none;
+  border: none;
+  background-color: #50efa7;
+  height: 73px;
+  width: 57px; }
+  .send-button:hover {
+    background-color: #21eb90; }
+
+.send-arrow {
+  opacity: 0.65;
+  color: white;
+  font-size: 24px; }
+
+.center-page {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  text-align: center;
+  bottom: 0;
+  margin: auto; }
+
+.no-chat {
+  height: 53px;
+  font-size: 2.9rem;
+  line-height: 1.42857;
+  color: #0D212B; }
+
+/*# sourceMappingURL=chatRoom.css.map */
