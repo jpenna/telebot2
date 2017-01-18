@@ -7,7 +7,10 @@ const chatSchema = mongoose.Schema({
     required: true,
     unique: true,
   },
-  type: String,
+  type: {
+    type: String,
+    required: true,
+  },
   firstname: String,
   lastname: String,
   messages: [],
