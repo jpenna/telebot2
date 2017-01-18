@@ -2,7 +2,7 @@ module.exports = {
   entry: './public/chatRoom/components/chatRoom.react.js',
   output: {
     filename: 'bundle.js',
-    path: './public/script/',
+    path: './public/scripts/',
   },
   module: {
     loaders: [

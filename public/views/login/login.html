@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html></html>
+<head>
+  <!-- HTTPS required. HTTP will give a 403 forbidden response-->
+  <link rel="stylesheet" href="/styles/bulma/css/bulma.css">
+  <link rel="stylesheet" href="/styles/css/utils.css">
+  <link rel="stylesheet" href="/styles/css/login.css">
+</head>
+<body>
+  <div class="login-box">
+    <div class="login-welcome-box">
+      <div class="login-welcome">WELCOME</div>
+      <div class="login-little">LITTLE ONE</div>
+    </div>
+    <div class="login-sub-box">
+      <div class="login-sub-up">Let the <span class="login-highlight">bot</span> do your work</div>
+      <div class="lobin-sub-sub">- or not -</div>
+    </div>
+    <div class="login-chose-box">
+      <div class="login-chose">Chose your way in!</div>
+      <div class="level login-level">
+        <div class="level-item has-text-centered">
+          <span>
+            <button onclick="phone_btn_onclick()" class="no-button">
+              <figure><img src="/img/phone.png" class="phone">
+                <figcaption class="login-figcaption">SMS</figcaption>
+              </figure>
+            </button>
+          </span>
+        </div>
+        <div class="level-item has-text-centered">
+          <span>
+            <button onclick="email_btn_onclick()" class="no-button">
+              <figure><img src="/img/email.png" class="email">
+                <figcaption class="login-figcaption">E-MAIL</figcaption>
+              </figure>
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // phone form submission handler
+    function phone_btn_onclick() {
+      console.log('phone');
+      // AccountKit.login('PHONE', {countryCode: null, phoneNumber: null},
+      //         loginCallback);
+    }
+    // email form submission handler
+    function email_btn_onclick() {
+      console.log('email');
+      // AccountKit.login('EMAIL', {emailAddress: null}, loginCallback);
+    }
+  </script>
+</body>
