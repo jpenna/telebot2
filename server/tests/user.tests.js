@@ -71,3 +71,25 @@ describe('db.findUserByToken', () => {
     }).catch(err => console.log(err));
   });
 });
+
+describe('db.removeUser', () => {
+  it('should remove user', (done) => {
+    const id = user1.id;
+
+    db.removeUser(id).then((result) => {
+      expect(result.result.n).toBe(1);
+      expect(result.result.ok).toBe(1);
+      done();
+    }).catch(err => console.log(err));
+  });
+
+  it('should not find user with wrong token', (done) => {
+    const id = 333;
+
+    db.removeUser(id).then((result) => {
+      expect(result.result.n).toBe(0);
+      expect(result.result.ok).toBe(1);
+      done();
+    }).catch(err => console.log(err));
+  });
+});

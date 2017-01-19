@@ -43,6 +43,10 @@ const db = {
     return User.findOne({ id });
   },
 
+  removeUser(id) {
+    return User.remove({ id }).exec();
+  },
+
 };
 
 module.exports = { db };
