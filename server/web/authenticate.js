@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const axios = require('axios');
 const { db } = require('../utils/db');
 
@@ -7,6 +8,7 @@ const auth = express.Router();
 
 auth.use(bodyParser.urlencoded({ extended: false }));
 auth.use(bodyParser.json());
+auth.use(cookieParser());
 
 // var csrf_guid = Guid.raw();
 // const apiVersion = 'v1.1';
@@ -15,8 +17,27 @@ const appSecret = '3d81a108d5a824f04f579ba078a73d77';
 const meEndpointBaseUrl = 'https://graph.accountkit.com/v1.1/me';
 const tokenExchangeBaseUrl = 'https://graph.accountkit.com/v1.1/access_token';
 
+auth.get('/views/chatRoom', (req, res, next) => {
+  if (req.cookies && req.cookies.token) {
 
-auth.post('/', (request, response) => {
+    db.findUserByToken(req.cookies.token).then((result) => {
+
+      if (result) {
+        const date = new Date().getTime();
+        const expiration = new Date(result.expiration_date).getTime();
+        if (date < expiration) {
+          next();
+        }
+      }
+
+    });
+
+  } else {
+    res.redirect(401, '/views/login');
+  }
+});
+
+auth.post('/sendcode', (request, response) => {
 
   const appAccessToken = ['AA', appId, appSecret].join('|');
   const params = {
@@ -55,10 +76,12 @@ auth.post('/', (request, response) => {
           db.removeUser(id);
           db.insertUser(id, email, token, expiration);
         }
+
       });
 
       console.log(data);
 
+      response.cookie('token', token);
       response.writeHead(302, {
         Location: 'views/chatRoom',
         'x-auth': res.data.access_token,

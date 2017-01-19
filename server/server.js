@@ -7,17 +7,14 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
+app.use(auth);
 
-// app.use((req, res, next) => {
-//   console.log(req.path);
-//   next();
-// });
-
-app.use('/sendcode', auth);
-
-// app.use((req,res,next) => {console.log(req.path, req.url); next();});
 app.use(express.static(path.join(__dirname, '../public')));
 
+// if inexistant path
+app.use((req, res) => {
+  res.redirect(404, '/views/login');
+});
 
 server.listen(3100);
 
