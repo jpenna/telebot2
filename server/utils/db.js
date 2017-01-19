@@ -1,5 +1,6 @@
 const { Chat } = require('../db/model/chat');
 const { Message } = require('../db/model/message');
+const { User } = require('../db/model/user');
 const _ = require('lodash');
 
 const db = {
@@ -27,6 +28,29 @@ const db = {
   findChatById(chatId) {
     return Chat.findOne({ chat_id: chatId }).exec();
   },
+
+  insertUser(id, email, token, expirationDate) {
+    const userData = { id, email, token, expiration_date: expirationDate };
+    const user = new User(userData);
+    return user.save();
+  },
+
+  findUserByToken(token) {
+    User.findOne({ token }).then(result => result)
+    .catch((err) => {
+      console.log(err);
+      return false;
+    });
+  },
+
+  findUserById(id) {
+    User.findOne({ id }).then(result => result)
+    .catch((err) => {
+      console.log(err);
+      return false;
+    });
+  },
+
 };
 
 module.exports = { db };
