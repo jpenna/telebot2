@@ -1,57 +1,110 @@
 <!DOCTYPE html>
 <html></html>
 <head>
-  <!-- HTTPS required. HTTP will give a 403 forbidden response-->
+  <!-- HTTPS required. HTTP will give a 403 forbidden response -->
+  <script>
+    // initialize Account Kit with CSRF protection
+    AccountKit_OnInteractive = function() {
+      AccountKit.init(
+        {
+          appId: '1647210538911602',
+          state: "csrf",
+          version: 'v1.1'
+        }
+      );
+    };
+    </script>
+  <script src="https://sdk.accountkit.com/pt_BR/sdk.js"></script>
+
   <link rel="stylesheet" href="/styles/bulma/css/bulma.css">
   <link rel="stylesheet" href="/styles/css/utils.css">
   <link rel="stylesheet" href="/styles/css/login.css">
 </head>
 <body>
+
   <div class="login-box">
+
     <div class="login-welcome-box">
       <div class="login-welcome">WELCOME</div>
       <div class="login-little">LITTLE ONE</div>
     </div>
+
     <div class="login-sub-box">
       <div class="login-sub-up">Let the <span class="login-highlight">bot</span> do your work</div>
       <div class="lobin-sub-sub">- or not -</div>
     </div>
+
     <div class="login-chose-box">
       <div class="login-chose">Chose your way in!</div>
       <div class="level login-level">
+
         <div class="level-item has-text-centered">
           <span>
-            <button onclick="phone_btn_onclick()" class="no-button">
+            <button onclick="smsLogin()" class="no-button">
               <figure><img src="/img/phone.png" class="phone">
                 <figcaption class="login-figcaption">SMS</figcaption>
               </figure>
             </button>
           </span>
         </div>
+
         <div class="level-item has-text-centered">
           <span>
-            <button onclick="email_btn_onclick()" class="no-button">
+            <button onclick="emailLogin()" class="no-button">
               <figure><img src="/img/email.png" class="email">
                 <figcaption class="login-figcaption">E-MAIL</figcaption>
               </figure>
             </button>
           </span>
         </div>
+
       </div>
     </div>
+
   </div>
 
+  <form id="my_form" action="/sendcode" method="post" hidden>
+    <input id="code" type="text" name="code">
+    <input id="csrf_nonce" type="text" name="csrf_nonce">
+  </form>
+
   <script>
-    // phone form submission handler
-    function phone_btn_onclick() {
-      console.log('phone');
-      // AccountKit.login('PHONE', {countryCode: null, phoneNumber: null},
-      //         loginCallback);
+
+
+
+
+
+  // login callback
+  function loginCallback(response) {
+    console.log(response);
+    if (response.status === "PARTIALLY_AUTHENTICATED") {
+      document.getElementById("code").value = response.code;
+      document.getElementById("csrf_nonce").value = response.state;
+      document.getElementById("my_form").submit();
     }
-    // email form submission handler
-    function email_btn_onclick() {
-      console.log('email');
-      // AccountKit.login('EMAIL', {emailAddress: null}, loginCallback);
+    else if (response.status === "NOT_AUTHENTICATED") {
+      // handle authentication failure
+      console.log('authentication failed');
     }
+    else if (response.status === "BAD_PARAMS") {
+      // handle bad parameters
+      console.log('bad params');
+    }
+  }
+
+
+  // phone form submission handler
+  function smsLogin() {
+    AccountKit.login('PHONE',
+    {countryCode: null, phoneNumber: null},
+    loginCallback);
+  }
+  // email form submission handler
+  function emailLogin() {
+    console.log('email');
+    AccountKit.login('EMAIL', {emailAddress: null}, loginCallback);
+  }
+
+
   </script>
 </body>
