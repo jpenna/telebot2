@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
+const { db } = require('../utils/db');
 
 const auth = express.Router();
 
@@ -38,7 +39,23 @@ auth.post('/', (request, response) => {
     axios.get(meEndpointBaseUrl, { params: meParams })
     .then((meRes) => {
       const data = meRes.data;
-      // register user on db
+
+      const id = data.id;
+      const email = data.email.address;
+      const token = res.data.access_token;
+      // calculate expiration date in milliseconds
+      const expiration = new Date().getTime() + (res.data.token_refresh_interval_sec * 1000);
+
+      db.findUserById(data.id).then((result) => {
+        if (!result) {
+          // insert user
+          db.insertUser(id, email, token, expiration);
+        } else {
+          // remove and insert new data
+          db.removeUser(id);
+          db.insertUser(id, email, token, expiration);
+        }
+      });
 
       console.log(data);
 
