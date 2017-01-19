@@ -1,7 +1,7 @@
 require('./config/config');
 const express = require('express');
 const path = require('path');
-const { auth } = require('./authenticate');
+const { auth } = require('./web/authenticate');
 
 const app = express();
 const server = require('http').Server(app);
