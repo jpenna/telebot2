@@ -36,19 +36,11 @@ const db = {
   },
 
   findUserByToken(token) {
-    User.findOne({ token }).then(result => result)
-    .catch((err) => {
-      console.log(err);
-      return false;
-    });
+    return User.findOne({ token });
   },
 
   findUserById(id) {
-    User.findOne({ id }).then(result => result)
-    .catch((err) => {
-      console.log(err);
-      return false;
-    });
+    return User.findOne({ id });
   },
 
 };
