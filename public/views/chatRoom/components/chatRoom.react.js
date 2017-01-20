@@ -16,6 +16,9 @@ class ChatRoom extends React.Component {
       activeId: props.chats.activeId,
     }
 
+    this.avatarPlaceholder = '/img/mickey.jpg';
+    // this.avatarPlaceholder = '/img/avatar-placeholder.png';
+
     this.changeActive = this.changeActive.bind(this);
     this.newMessage = this.newMessage.bind(this);
     this.insertNewMessage = this.insertNewMessage.bind(this);
@@ -118,9 +121,9 @@ class ChatRoom extends React.Component {
   render() {
     return (
       <div className="box columns column is-10 is-offset-1 telebot-app">
-        <ChatList chats={this.state.chats} activeId={this.state.activeId} changeActive={this.changeActive}/>
+        <ChatList chats={this.state.chats} activeId={this.state.activeId} changeActive={this.changeActive} avatarPlaceholder={this.avatarPlaceholder}/>
         <MessagesPanel chats={this.state.chats} activeId={this.state.activeId} name={this.state.name}
-          newMessage={this.newMessage} changeActive={this.changeActive}/>
+          newMessage={this.newMessage} changeActive={this.changeActive} avatarPlaceholder={this.avatarPlaceholder}/>
       </div>
     )
   }

@@ -1,7 +1,7 @@
 /* Connect to Telegram */
 const botgram = require('botgram');
 
-const bot = botgram('266093667:AAGi5U5Rdf4Di-zwJ1aFcm7idJN7Xt7tyZw');
+const bot = botgram(process.env.BOT_TOKEN);
 
 module.exports = { bot };
 

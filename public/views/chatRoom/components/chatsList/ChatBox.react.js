@@ -63,27 +63,33 @@ class ChatBox extends React.Component {
         onClick={() => this.changeActive(this.props.id)}>
         <div className="media">
           <figure className="media-left">
-            <p className="image is-64x64 is-50x50">
-              <img className="avatar-image" src="/img/avatar-placeholder.png"/>
-            </p>
-          </figure>
-          <div className="media-content">
-            <div className="content">
-              <div className="level is-mobile">
-                <div className="level-left">
-                  <p className="level-item preview-name">{this.props.name}</p>
-                </div>
-                <div className="level-right">
-                  <small className="level-item preview-time">{sentAt}</small>
-                </div>
+            <p className="image is-50x50">
+              <img className="avatar-image is-50x50" src={`/img/avatars/${this.props.id}.jpg`}
+              ref = { img => this.chatAvatar = img }
+              onError={() => {
+                if (this.chatAvatar.src !== this.props.avatarPlaceholder)
+                this.chatAvatar.src = this.props.avatarPlaceholder;
+              }
+            }/>
+          </p>
+        </figure>
+        <div className="media-content">
+          <div className="content">
+            <div className="level is-mobile">
+              <div className="level-left">
+                <p className="level-item preview-name">{this.props.name}</p>
               </div>
-              <p className="preview-text">{this.props.lastMessage}</p>
+              <div className="level-right">
+                <small className="level-item preview-time">{sentAt}</small>
+              </div>
             </div>
+            <p className="preview-text">{this.props.lastMessage}</p>
           </div>
         </div>
-      </button>
-    )
-  }
+      </div>
+    </button>
+  )
+}
 }
 
 module.exports = ChatBox;

@@ -41,35 +41,46 @@ class MessagesSpace extends React.Component {
       sentAt = days + ', ' + time
     }
 
-    const isOrange = this.props.type == 'client' ? 'is-orange' : '';
+    const isClient = this.props.type === 'client';
+
+    const isOrange = isClient ? 'is-orange' : '';
     const nameStyle = `${isOrange} level-item client-name`;
+
+    const avatar = isClient ? `/img/avatars/${this.props.id}.jpg` : `/img/telebot.jpg`;
 
     return (
 
       <div className="media">
         <figure className="media-left">
           <p className="image is-64x64">
-            <img className="avatar-image" src="/img/avatar-placeholder.png"/>
-          </p>
-        </figure>
-        <div className="media-content msg-context">
-          <div className="content">
-            <div className="level message-info is-mobile">
-              <div className="level-left">
-                <p className={nameStyle}>{this.props.author}</p>
-                {this.props.type == "bot" && <span className="tag is-dark-blue bot-small">BOT</span>}
-              </div>
-              <div className="level-right">
-                <small className="level-item">{sentAt}</small>
-              </div>
+            <img className="avatar-image height-100" src={avatar}
+              ref = { img => this.messageAvatar = img }
+              onError={() => {
+                if (this.messageAvatar.src !== this.props.avatarPlaceholder)
+                  this.messageAvatar.src = this.props.avatarPlaceholder;
+              }
+            }
+          />
+        </p>
+      </figure>
+      <div className="media-content msg-context">
+        <div className="content">
+          <div className="level message-info is-mobile">
+            <div className="level-left">
+              <p className={nameStyle}>{this.props.author}</p>
+              {this.props.type == "bot" && <span className="tag is-dark-blue bot-small">BOT</span>}
             </div>
-            <p className="message-text">{this.props.message}</p>
+            <div className="level-right">
+              <small className="level-item">{sentAt}</small>
+            </div>
           </div>
+          <p className="message-text">{this.props.message}</p>
         </div>
       </div>
+    </div>
 
-    )
-  }
+  )
+}
 }
 
 module.exports = MessagesSpace;

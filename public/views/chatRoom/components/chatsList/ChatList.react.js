@@ -49,7 +49,8 @@ class ChatList extends React.Component {
             sentAt={chat.messages[lastKey].sentAt}
             lastMessage={chat.messages[lastKey].message}
             activeId={this.props.activeId}
-            changeActive={this.props.changeActive}/>
+            changeActive={this.props.changeActive}
+            avatarPlaceholder={this.props.avatarPlaceholder}/>
           )
         }
       }

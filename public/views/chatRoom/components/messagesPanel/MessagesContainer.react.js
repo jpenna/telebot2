@@ -6,11 +6,13 @@ const MessageBox = require('./MessageBox.react');
 class MessagesContainer extends React.Component {
 
   render() {
+    const thisChat = this.props.chats[this.props.activeId];
 
-    const messages = this.props.chats[this.props.activeId].messages;
+    const chatId = thisChat.chat_id;
+    const messages = thisChat.messages;
 
     const conversation = messages.map((msg) => {
-      return <MessageBox key={Math.random() * new Date().getTime()} author={msg.author} message={msg.message} sentAt={msg.sentAt} type={msg.type} />
+      return <MessageBox key={Math.random() * new Date().getTime()} author={msg.author} message={msg.message} sentAt={msg.sentAt} type={msg.type} id={chatId} avatarPlaceholder={this.props.avatarPlaceholder}/>
 
     });
 

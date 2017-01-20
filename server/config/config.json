@@ -6,5 +6,9 @@
   "test": {
     "MONGODB_URI": "mongodb://localhost:27017/telebotTest"
 
+  },
+  "default": {
+    "BOT_TOKEN": "266093667:AAGi5U5Rdf4Di-zwJ1aFcm7idJN7Xt7tyZw"
+
   }
 }
