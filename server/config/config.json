@@ -8,7 +8,10 @@
 
   },
   "default": {
-    "BOT_TOKEN": "266093667:AAGi5U5Rdf4Di-zwJ1aFcm7idJN7Xt7tyZw"
-
+    "BOT_TOKEN": "266093667:AAGi5U5Rdf4Di-zwJ1aFcm7idJN7Xt7tyZw",
+    
+    "FB_API_VERSION": "v1.1",
+    "FB_APPID": "1647210538911602",
+    "FB_APP_SECRET": "3d81a108d5a824f04f579ba078a73d77"
   }
 }

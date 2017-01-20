@@ -11,11 +11,8 @@ auth.use(bodyParser.json());
 auth.use(cookieParser());
 
 // var csrf_guid = Guid.raw();
-// const apiVersion = 'v1.1';
-const appId = '1647210538911602';
-const appSecret = '3d81a108d5a824f04f579ba078a73d77';
-const meEndpointBaseUrl = 'https://graph.accountkit.com/v1.1/me';
-const tokenExchangeBaseUrl = 'https://graph.accountkit.com/v1.1/access_token';
+const meEndpointBaseUrl = `https://graph.accountkit.com/${process.env.FB_API_VERSION}/me`;
+const tokenExchangeBaseUrl = `https://graph.accountkit.com/${process.env.FB_API_VERSION}/access_token`;
 
 auth.get('/views/chatRoom', (req, res, next) => {
   if (req.cookies && req.cookies.token) {
@@ -39,7 +36,7 @@ auth.get('/views/chatRoom', (req, res, next) => {
 
 auth.post('/sendcode', (request, response) => {
 
-  const appAccessToken = ['AA', appId, appSecret].join('|');
+  const appAccessToken = ['AA', process.env.FB_APPID, process.env.FB_APP_SECRET].join('|');
   const params = {
     grant_type: 'authorization_code',
     code: request.body.code,
