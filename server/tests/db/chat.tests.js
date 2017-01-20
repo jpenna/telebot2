@@ -1,9 +1,8 @@
 /* eslint-disable */
-require('../config/config');
+require('../../config/config');
 const expect = require('expect');
-const { Chat } = require('../db/model/chat');
+const { Chat } = require('../../db/model/chat');
 const { ObjectId } = require('mongodb');
-const { db } = require('../utils/db');
 
 beforeEach(() => {
   Chat.remove({}).exec();
@@ -39,9 +38,9 @@ beforeEach(() => {
   };
 });
 
-describe('db.insertChat', () => {
+describe('Chat.insertChat', () => {
   it('should insert to DB', (done) => {
-    db.insertChat(chat1).then(() => {
+    Chat.insertChat(chat1).then(() => {
       Chat.find({ chat_id: chat1.chat_id }).then((chat) => {
         expect(chat.length).toBe(1);
         done();
@@ -51,7 +50,7 @@ describe('db.insertChat', () => {
 
   it('should not insert invalid data', (done) => {
     delete chat1.chat_id;
-    db.insertChat(chat1).then().catch(e => {
+    Chat.insertChat(chat1).then().catch(e => {
       Chat.find({ _id: id1 }).then((chat) => {
         expect(chat.length).toBe(0);
         done();
@@ -60,11 +59,11 @@ describe('db.insertChat', () => {
   });
 });
 
-describe('db.insertMessage', () => {
+describe('Chat.insertMessage', () => {
   it('should insert new message and keep old ones', (done) => {
-    db.insertChat(chat1).then((chat) => {
-      db.insertMessage(chat1.chat_id, msg2).then(() => {
-        db.insertMessage(chat1.chat_id, msg1).then((chat) => {
+    Chat.insertChat(chat1).then((chat) => {
+      Chat.insertMessage(chat1.chat_id, msg2).then(() => {
+        Chat.insertMessage(chat1.chat_id, msg1).then((chat) => {
           expect(chat.messages.length).toBe(2);
           done();
         });
@@ -73,12 +72,12 @@ describe('db.insertMessage', () => {
   });
 });
 
-describe('db.findChats', () => {
+describe('Chat.findChats', () => {
   it('should return all chats', (done) => {
 
-    db.insertChat(chat1).then(() => {
-      db.insertChat(chat2).then(() => {
-        db.findChats().then((data) => {
+    Chat.insertChat(chat1).then(() => {
+      Chat.insertChat(chat2).then(() => {
+        Chat.findChats().then((data) => {
           expect(data.length).toBe(2);
           done();
         });
@@ -88,12 +87,12 @@ describe('db.findChats', () => {
   });
 });
 
-describe('db.findChatById', () => {
+describe('Chat.findChatById', () => {
   it('should return chat messages', (done) => {
-    // db.insertChat(chat1).then(() => {
-    //   db.insertMessage(chat1.chat_id, msg2).then(() => {
-    //     db.insertMessage(chat1.chat_id, msg1).then((chat) => {
-    //       db.findChats(chat1.chat_id).then((chat) => {
+    // Chat.insertChat(chat1).then(() => {
+    //   Chat.insertMessage(chat1.chat_id, msg2).then(() => {
+    //     Chat.insertMessage(chat1.chat_id, msg1).then((chat) => {
+    //       Chat.findChats(chat1.chat_id).then((chat) => {
     //         expect(chat.messages.length).toBe(2);
             done();
     //       })

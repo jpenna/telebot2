@@ -3,23 +3,25 @@
 */
 
 const web = require('../web/web');
-const { db } = require('../utils/db');
+const { Chat } = require('../db/model/chat');
+
+const author = 'Telebot';
+const type = 'bot';
 
 // send reply to Telegram, web interface and persist data
 function send(reply, msg, replyMessage) {
   const chat = msg.chat;
-
-  reply.text(replyMessage);
-
   const data = {
+    author,
+    type,
     chat_id: chat.id,
-    author: 'Telebot',
-    type: 'bot',
     message: replyMessage,
     sentAt: new Date().getTime(),
   };
+
+  reply.text(replyMessage);
   web.sendMessage(data);
-  db.insertMessage(chat.id, data);
+  Chat.insertMessage(chat.id, data);
 }
 
 module.exports = { send };

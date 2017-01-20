@@ -1,6 +1,7 @@
 const { io } = require('../server.js');
 const { request } = require('https');
-const { db } = require('../utils/db');
+const { Chat } = require('../db/model/chat');
+
 
 const web = {
   // send message to web interface
@@ -18,7 +19,7 @@ const web = {
 io.on('connection', (socket) => {
 
   socket.on('getChats', () => {
-    db.findChats().then((chats) => {
+    Chat.findChats().then((chats) => {
       let data;
       if (!chats) {
         data = null;
@@ -39,7 +40,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('getChatMessages', (chatId) => {
-    db.findChatById(chatId).then((data) => {
+    Chat.findChatById(chatId).then((data) => {
       socket.emit('populateChatMessages', { messages: data.messages });
     }).catch(err => console.log(err));
   });
@@ -81,7 +82,7 @@ io.on('connection', (socket) => {
             message: data.message,
           }
 
-          db.insertMessage(data.chat_id, message);
+          Chat.insertMessage(data.chat_id, message);
         }
       });
     });

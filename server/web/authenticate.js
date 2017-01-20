@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const axios = require('axios');
-const { db } = require('../utils/db');
+const { User } = require('../db/model/user');
 
 const auth = express.Router();
 
@@ -17,7 +17,7 @@ const tokenExchangeBaseUrl = `https://graph.accountkit.com/${process.env.FB_API_
 auth.get('/views/chatRoom', (req, res, next) => {
   if (req.cookies && req.cookies.token) {
 
-    db.findUserByToken(req.cookies.token).then((result) => {
+    User.findUserByToken(req.cookies.token).then((result) => {
 
       if (result) {
         const date = new Date().getTime();
@@ -46,8 +46,6 @@ auth.post('/sendcode', (request, response) => {
   // exchange tokens
   axios.get(tokenExchangeBaseUrl, { params })
   .then((res) => {
-    console.log('data', res.data);
-    console.log('id', res.data.id);
 
     const meParams = {
       access_token: res.data.access_token,
@@ -64,14 +62,14 @@ auth.post('/sendcode', (request, response) => {
       // calculate expiration date in milliseconds
       const expiration = new Date().getTime() + (res.data.token_refresh_interval_sec * 1000);
 
-      db.findUserById(data.id).then((result) => {
+      User.findUserById(data.id).then((result) => {
         if (!result) {
           // insert user
-          db.insertUser(id, email, token, expiration);
+          User.insertUser(id, email, token, expiration);
         } else {
           // remove and insert new data
-          db.removeUser(id);
-          db.insertUser(id, email, token, expiration);
+          User.removeUser(id);
+          User.insertUser(id, email, token, expiration);
         }
 
       });

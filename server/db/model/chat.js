@@ -1,3 +1,5 @@
+/* eslint func-names:off, comma-dangle:off */
+
 const { mongoose } = require('../mongoose');
 const _ = require('lodash');
 
@@ -13,8 +15,59 @@ const chatSchema = mongoose.Schema({
   },
   firstname: String,
   lastname: String,
-  messages: [],
+  messages: [{
+    author: {
+      type: String,
+      required: true,
+    },
+    message: {
+      type: String,
+      required: true,
+    },
+    sentAt: {
+      type: Date,
+      required: true,
+      default: Date.now,
+    },
+    type: {
+      type: String,
+    },
+  }],
 });
+
+/*
+Insert new Chat
+@param data Object {chat_id, type, firstname, lastname}
+*/
+chatSchema.statics.insertChat = function (data) {
+  const Chat = this;
+
+  const chatData = _.pick(data, ['chat_id', 'type', 'firstname', 'lastname']);
+  const chat = new Chat(chatData);
+  return chat.save();
+};
+
+/*
+Insert new message on chat document
+@param data Object {chat_id, author, message, sentAt, type}
+*/
+chatSchema.statics.insertMessage = function (data) {
+  const messageData = _.pick(data, ['author', 'message', 'sentAt', 'type']);
+
+  return this.findOneAndUpdate({ chat_id: data.chat_id },
+    { $push: { messages: messageData } },
+    { upsert: true, new: true }
+  ).exec();
+};
+
+// Get all chats
+chatSchema.statics.findChats = function () {
+  return this.find({}).exec();
+};
+
+chatSchema.statics.findChatById = function (chatId) {
+  return this.findOne({ chat_id: chatId }).exec();
+};
 
 chatSchema.methods.toJSON = function tJSON() {
   const chat = this;
