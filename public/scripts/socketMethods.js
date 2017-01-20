@@ -1,33 +1,29 @@
-socket.on('newChat', function (data) {
+/* eslint no-undef:off, func-names:off*/
 
-    console.log('new client: ', user );
+// This JS is required in chatRoom.react.js
 
-    let userData = {
-        chatId: user.chat_id,
-        first_name: user.firstname,
-        last_name: user.lastname,
-        avatar: user.avatar,
-        messages: []
-    }
+socket.on('newChat', (chatData) => {
 
-    console.log(userData)
+  const chat = {
+    chatId: chatData.chat_id,
+    first_name: chatData.firstname,
+    last_name: chatData.lastname,
+    messages: []
+  };
 
-    window.newUser(userData)
+  window.newChat(chat);
+
 });
 
-socket.on('newMessage', function (msgObj) {
+socket.on('newMessage', (msgData) => {
 
-    console.log('chat message: ', msgObj);
+  const msg = {
+    chatId: msgData.chat_id,
+    author: msgData.author,
+    type: msgData.type,
+    text: msgData.message,
+    sentAt: msgData.sentAt
+  };
 
-    let msgData = {
-        chatId: msgObj.chat_id,
-        author: msgObj.author,
-        type: msgObj.type,
-        text: msgObj.message,
-        sentAt: msgObj.sentAt
-    }
-
-    console.log(msgData);
-
-    window.newMessage(msgData)
+  window.newMessage(msg);
 });

@@ -66,8 +66,6 @@
 	  function ChatRoom(props) {
 	    _classCallCheck(this, ChatRoom);
 
-	    // this.socket = socket;
-
 	    var _this = _possibleConstructorReturn(this, (ChatRoom.__proto__ || Object.getPrototypeOf(ChatRoom)).call(this, props));
 
 	    _this.state = {
@@ -103,12 +101,10 @@
 	  }, {
 	    key: 'insertNewClient',
 	    value: function insertNewClient(clientData) {
-
 	      var client = {
 	        chat_id: clientData.chatId,
 	        firstname: clientData.firstname,
 	        lastname: clientData.lastname,
-	        avatar: clientData.avatar,
 	        messages: []
 	      };
 
@@ -122,13 +118,12 @@
 	    value: function componentWillMount() {
 	      var _this2 = this;
 
-	      window.newUser = function (data) {
+	      window.newChat = function (data) {
 
 	        var client = {
 	          chatId: data.chat_id,
 	          firstname: data.firstname,
 	          lastname: data.lastname,
-	          avatar: data.avatar,
 	          messages: []
 	        };
 
@@ -136,7 +131,6 @@
 	      };
 
 	      window.newMessage = function (data) {
-
 	        var chatId = data.chatId;
 	        var author = data.author;
 	        var type = data.type;
@@ -161,13 +155,9 @@
 	    value: function changeActive(id) {
 	      this.setState({ activeId: id }, this.scrollBottom());
 	    }
-
-	    //  TODO take it out of here
-
 	  }, {
 	    key: 'newMessage',
 	    value: function newMessage(message) {
-
 	      var activeChat = this.state.activeId;
 	      var author = 'Telebot';
 	      var type = 'user';
@@ -190,9 +180,18 @@
 	      return React.createElement(
 	        'div',
 	        { className: 'box columns column is-10 is-offset-1 telebot-app' },
-	        React.createElement(ChatList, { chats: this.state.chats, activeId: this.state.activeId, changeActive: this.changeActive, avatarPlaceholder: this.avatarPlaceholder }),
-	        React.createElement(MessagesPanel, { chats: this.state.chats, activeId: this.state.activeId, name: this.state.name,
-	          newMessage: this.newMessage, changeActive: this.changeActive, avatarPlaceholder: this.avatarPlaceholder })
+	        React.createElement(ChatList, { chats: this.state.chats,
+	          activeId: this.state.activeId,
+	          changeActive: this.changeActive,
+	          avatarPlaceholder: this.avatarPlaceholder
+	        }),
+	        React.createElement(MessagesPanel, { chats: this.state.chats,
+	          activeId: this.state.activeId,
+	          name: this.state.name,
+	          newMessage: this.newMessage,
+	          changeActive: this.changeActive,
+	          avatarPlaceholder: this.avatarPlaceholder
+	        })
 	      );
 	    }
 	  }]);
@@ -200,21 +199,37 @@
 	  return ChatRoom;
 	}(React.Component);
 
+	// Get chats
+
+
 	socket.emit('getChats');
 	socket.on('populateChats', function (data) {
 
+	  var initialState = {};
 	  var chats = {};
 
-	  data.chats.forEach(function (chat, key) {
-	    chats[chat.chat_id] = chat;
-	  });
+	  if (!data.chats[0]) {
+	    // No chats, get NO CHAT message
+	    document.querySelector('.no-chat').removeAttribute('hidden');
 
-	  var initialState = {
-	    activeId: data.chats[0].chat_id,
-	    chats: chats
-	  };
+	    socket.on('newChat', function () {
+	      location.reload();
+	    });
+	  } else {
+	    // Populate chats panel and messages
+	    data.chats.forEach(function (chat, key) {
+	      chats[chat.chat_id] = chat;
+	    });
 
-	  ReactDOM.render(React.createElement(ChatRoom, { chats: initialState }), document.getElementById('container'));
+	    initialState = {
+	      chats: chats,
+	      activeId: data.chats[0].chat_id
+	    };
+
+	    __webpack_require__(247);
+
+	    ReactDOM.render(React.createElement(ChatRoom, { chats: initialState }), document.getElementById('container'));
+	  }
 	});
 
 /***/ },
@@ -30847,6 +30862,41 @@
 	}(React.Component);
 
 	module.exports = InputContainer;
+
+/***/ },
+/* 247 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/* eslint no-undef:off, func-names:off*/
+
+	// This JS is required in chatRoom.react.js
+
+	socket.on('newChat', function (chatData) {
+
+	  var chat = {
+	    chatId: chatData.chat_id,
+	    first_name: chatData.firstname,
+	    last_name: chatData.lastname,
+	    messages: []
+	  };
+
+	  window.newChat(chat);
+	});
+
+	socket.on('newMessage', function (msgData) {
+
+	  var msg = {
+	    chatId: msgData.chat_id,
+	    author: msgData.author,
+	    type: msgData.type,
+	    text: msgData.message,
+	    sentAt: msgData.sentAt
+	  };
+
+	  window.newMessage(msg);
+	});
 
 /***/ }
 /******/ ]);

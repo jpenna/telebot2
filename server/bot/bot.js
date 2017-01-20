@@ -4,6 +4,13 @@ const botReply = require('./botReply');
 const utils = require('./utils');
 const { Chat } = require('../db/model/chat');
 
+// bot.all((msg, reply, next) => {
+//   Chat.findChatById(msg.chat.id).then((result) => {
+//
+//   });
+//   next();
+// });
+
 /* handles /start command */
 bot.command('start', (msg, reply) => {
   const chat = msg.chat;
@@ -13,13 +20,13 @@ bot.command('start', (msg, reply) => {
 
   const chatData = {
     chat_id: chat.id,
-    type: chat.type,
+    chatType: chat.type,
     firstname: chat.firstname,
     lastname: chat.lastname,
   };
 
   Chat.insertChat(chatData).then(() => {
-    web.newChat(chat);
+    web.newChat(chatData);
     botReply.send(reply, msg, 'Welcome!');
   });
 });
@@ -30,13 +37,20 @@ bot.text((msg, reply) => {
 
   const messageData = {
     chat_id: chat.id,
+    chatType: chat.type,
+    firstname: chat.firstname,
+    lastname: chat.lastname,
     author: chat.firstname,
     type: 'client',
     message: msg.text,
     sentAt: new Date().getTime(),
   };
 
-  Chat.insertMessage(messageData);
-  web.sendMessage(messageData);
-  botReply.send(reply, msg, 'Hello!');
+  Chat.insertMessage(messageData).then((result) => {
+    if (result === 'newChat') {
+      web.newChat(messageData);
+    }
+    web.sendMessage(messageData);
+    botReply.send(reply, msg, 'Hello!');
+  });
 });

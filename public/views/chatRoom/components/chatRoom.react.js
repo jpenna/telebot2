@@ -9,8 +9,6 @@ class ChatRoom extends React.Component {
   constructor(props) {
     super(props);
 
-    // this.socket = socket;
-
     this.state = {
       chats: props.chats.chats,
       activeId: props.chats.activeId,
@@ -40,12 +38,10 @@ class ChatRoom extends React.Component {
   }
 
   insertNewClient(clientData) {
-
     const client = {
       chat_id: clientData.chatId,
       firstname: clientData.firstname,
       lastname: clientData.lastname,
-      avatar: clientData.avatar,
       messages: []
     }
 
@@ -53,26 +49,22 @@ class ChatRoom extends React.Component {
     chats[clientData.chatId] = client;
 
     this.setState({chats: chats});
-
   }
 
   componentWillMount() {
-    window.newUser = (data) => {
+    window.newChat = (data) => {
 
       const client = {
         chatId: data.chat_id,
         firstname: data.firstname,
         lastname: data.lastname,
-        avatar: data.avatar,
         messages: []
       }
 
       this.insertNewClient(client)
-
     }
 
     window.newMessage = (data) => {
-
       const chatId = data.chatId;
       const author = data.author;
       const type = data.type;
@@ -80,10 +72,7 @@ class ChatRoom extends React.Component {
       const sentAt = data.sentAt;
 
       this.insertNewMessage(chatId, author, type, text, sentAt)
-
     };
-
-
   }
 
   componentDidMount() {
@@ -98,9 +87,7 @@ class ChatRoom extends React.Component {
     this.setState({activeId: id}, this.scrollBottom())
   }
 
-  //  TODO take it out of here
   newMessage(message) {
-
     const activeChat = this.state.activeId;
     const author = 'Telebot';
     const type = 'user';
@@ -110,7 +97,6 @@ class ChatRoom extends React.Component {
     socket.emit('sendTelegram', {chat_id: activeChat, type: type, message: text});
 
     this.insertNewMessage(activeChat, author, type, text, sentAt);
-
   }
 
   scrollBottom() {
@@ -121,30 +107,54 @@ class ChatRoom extends React.Component {
   render() {
     return (
       <div className="box columns column is-10 is-offset-1 telebot-app">
-        <ChatList chats={this.state.chats} activeId={this.state.activeId} changeActive={this.changeActive} avatarPlaceholder={this.avatarPlaceholder}/>
-        <MessagesPanel chats={this.state.chats} activeId={this.state.activeId} name={this.state.name}
-          newMessage={this.newMessage} changeActive={this.changeActive} avatarPlaceholder={this.avatarPlaceholder}/>
+        <ChatList chats={this.state.chats}
+          activeId={this.state.activeId}
+          changeActive={this.changeActive}
+          avatarPlaceholder={this.avatarPlaceholder}
+        />
+        <MessagesPanel chats={this.state.chats}
+          activeId={this.state.activeId}
+          name={this.state.name}
+          newMessage={this.newMessage}
+          changeActive={this.changeActive}
+          avatarPlaceholder={this.avatarPlaceholder}
+        />
       </div>
     )
   }
 }
 
+// Get chats
 socket.emit('getChats');
 socket.on('populateChats', (data) => {
 
+  let initialState = {};
   const chats = {};
 
-  data.chats.forEach((chat, key) => {
-    chats[chat.chat_id] = chat;
-  });
+  if (!data.chats[0]) {
+    // No chats, get NO CHAT message
+    document.querySelector('.no-chat').removeAttribute('hidden');
 
-  const initialState = {
-    activeId: data.chats[0].chat_id,
-    chats
-  };
+    socket.on('newChat', function () {
+      location.reload();
+    });
 
-  ReactDOM.render(
-    <ChatRoom chats={initialState} />,
-    document.getElementById('container')
-  );
+  } else {
+    // Populate chats panel and messages
+    data.chats.forEach((chat, key) => {
+      chats[chat.chat_id] = chat;
+    });
+
+    initialState = {
+      chats,
+      activeId: data.chats[0].chat_id,
+    };
+
+    require('../../../scripts/socketMethods');
+
+    ReactDOM.render(
+      <ChatRoom chats={initialState} />,
+      document.getElementById('container')
+    );
+  }
 });

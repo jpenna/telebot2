@@ -86,8 +86,8 @@ auth.post('/sendcode', (request, response) => {
           .then(() => {
 
             // Set cookie for persistent login session
+            console.log('setCookie', request.body.code);
             response.cookie('token', token, { expires: new Date(expiration) });
-            console.log('setCookie', token);
 
             // Send user to chatRoom page
             response.writeHead(302, {
@@ -97,7 +97,7 @@ auth.post('/sendcode', (request, response) => {
 
             response.end();
 
-          });
+          }).catch(err => console.log(err));
         }
 
       });
@@ -106,7 +106,7 @@ auth.post('/sendcode', (request, response) => {
     }).catch(err => console.log('FB /ME ERROR:', err));
   }).catch((err) => {
     console.log('FB /TOKEN EXCHANGE ERROR:', err);
-    response.send('Something went wrong.\nNo login for you.');
+    response.send('Something went wrong.\nSorry, sir.');
   });
 });
 

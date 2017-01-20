@@ -9,7 +9,7 @@ const chatSchema = mongoose.Schema({
     required: true,
     unique: true,
   },
-  type: {
+  chatType: {
     type: String,
     required: true,
   },
@@ -42,7 +42,7 @@ Insert new Chat
 chatSchema.statics.insertChat = function (data) {
   const Chat = this;
 
-  const chatData = _.pick(data, ['chat_id', 'type', 'firstname', 'lastname']);
+  const chatData = _.pick(data, ['chat_id', 'chatType', 'firstname', 'lastname']);
   const chat = new Chat(chatData);
   return chat.save();
 };
@@ -56,8 +56,15 @@ chatSchema.statics.insertMessage = function (data) {
 
   return this.findOneAndUpdate({ chat_id: data.chat_id },
     { $push: { messages: messageData } },
-    { upsert: true, new: true }
-  ).exec();
+    { new: true }
+  ).exec().then((result) => {
+    if (!result) {
+      return this.insertChat(data).then(() => {
+        this.insertMessage(data);
+        return 'newChat';
+      });
+    }
+  });
 };
 
 // Get all chats
