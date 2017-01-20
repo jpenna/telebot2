@@ -1,4 +1,4 @@
-const config = require('./config.json');
+const config = require('../../config.json');
 const _ = require('lodash');
 
 const env = process.env.NODE_ENV || 'dev';
