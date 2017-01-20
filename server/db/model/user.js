@@ -33,7 +33,6 @@ userSchema.statics.findUserByToken = function (token) {
   return this.findOne({ token });
 };
 
-
 userSchema.statics.findUserById = function (id) {
   return this.findOne({ id });
 };

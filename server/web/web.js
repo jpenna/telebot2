@@ -1,15 +1,16 @@
 const { io } = require('../server.js');
 const { request } = require('https');
 const { Chat } = require('../db/model/chat');
+const axios = require('axios');
 
 
 const web = {
-  // send message to web interface
+  // Send message to web interface
   sendMessage(data) {
     io.emit('newMessage', data);
   },
 
-  // send chat to chat list in web interface
+  // Send chat to chat list in web interface
   newChat(data) {
     io.emit('newChat', data);
   },
@@ -18,15 +19,15 @@ const web = {
 
 io.on('connection', (socket) => {
 
+  // Send chats to populate chat list
   socket.on('getChats', () => {
-    Chat.findChats().then((chats) => {
-      let data;
-      if (!chats) {
-        data = null;
+    Chat.findChats().then((chatsResult) => {
+      let chats;
+      if (!chatsResult) {
+        chats = null;
       } else {
-        // don't send messages from chats user isn't seeing
-        data = chats.map((obj, key) => {
-          const msg = obj;
+        // Just send all messages for active chat. The others get last message for preview
+        chats = chatsResult.map((msg, key) => {
           if (key !== 0) {
             msg.messages = [
               msg.messages[msg.messages.length - 1],
@@ -35,17 +36,20 @@ io.on('connection', (socket) => {
           return msg;
         });
       }
-      socket.emit('populateChats', { chats: data });
+
+      socket.emit('populateChats', { chats });
+
     }).catch(err => console.log(err));
   });
 
+  // Send chat messages on change active chat
   socket.on('getChatMessages', (chatId) => {
     Chat.findChatById(chatId).then((data) => {
       socket.emit('populateChatMessages', { messages: data.messages });
     }).catch(err => console.log(err));
   });
 
-  // send message to user on Telegram
+  // Send message to Telegram client
   socket.on('sendTelegram', (data) => {
 
     const postData = JSON.stringify({
@@ -54,46 +58,49 @@ io.on('connection', (socket) => {
       text: data.message,
     });
 
-    const options = {
-      hostname: 'api.telegram.org',
-      port: 443,
-      path: '/bot266093667:AAGi5U5Rdf4Di-zwJ1aFcm7idJN7Xt7tyZw/sendMessage',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(postData),
-      },
-    };
+    // const options = {
+    //   // hostname: 'api.telegram.org',
+    //   // port: 443,
+    //   // path: '/bot266093667:AAGi5U5Rdf4Di-zwJ1aFcm7idJN7Xt7tyZw/sendMessage',
+    //   // method: 'POST',
+    //   // headers: {
+    //   //   'Content-Type': 'application/json',
+    //   //   'Content-Length': Buffer.byteLength(postData),
+    //   // },
+    // };
 
-    const req = request(options, (res) => {
-      // console.log('statusCode:', res.statusCode);
-      // console.log('headers:', res.headers);
-      let body = '';
+    axios.post(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`, postData)
+    .then((res) => {
+      const message = {
+        author: 'Telebot',
+        message: res.data.message,
+      }
 
-      res.on('data', (d) => {
-        body += d;
-      });
+      Chat.insertMessage(data.chat_id, message);
 
-      res.on('end', () => {
-        body = JSON.parse(body);
-        if (body.ok) {
-          const message = {
-            author: 'Telebot',
-            message: data.message,
-          }
+    }).catch(err => console.log('on.sendTelegram:', err));
 
-          Chat.insertMessage(data.chat_id, message);
-        }
-      });
-    });
+    // const req = request(options, (res) => {
+    //   let body = '';
+    //
+    //   res.on('data', (d) => {
+    //     body += d;
+    //   });
+    //
+    //   res.on('end', () => {
+    //     body = JSON.parse(body);
+    //     if (body.ok) {
+        // }
+      // });
+    // });
 
-    req.write(postData);
-
-    req.on('error', (e) => {
-      console.error(e);
-    });
-
-    req.end();
+    // req.write(postData);
+    //
+    // req.on('error', (e) => {
+    //   console.error(e);
+    // });
+    //
+    // req.end();
 
     // run callback from client socket
     // callback();

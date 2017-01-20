@@ -9,19 +9,18 @@ const author = 'Telebot';
 const type = 'bot';
 
 // send reply to Telegram, web interface and persist data
-function send(reply, msg, replyMessage) {
-  const chat = msg.chat;
-  const data = {
+function send(reply, botAPIMsg, msg) {
+  const messageData = {
     author,
     type,
-    chat_id: chat.id,
-    message: replyMessage,
+    chat_id: botAPIMsg.chat.id,
+    message: msg,
     sentAt: new Date().getTime(),
   };
 
-  reply.text(replyMessage);
-  web.sendMessage(data);
-  Chat.insertMessage(chat.id, data);
+  reply.text(msg);
+  web.sendMessage(messageData);
+  Chat.insertMessage(messageData);
 }
 
 module.exports = { send };
