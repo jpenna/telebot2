@@ -2,8 +2,22 @@
 
 const React = require('react');
 const ChatBox = require('./ChatBox.react');
+const cookieParser = require('cookie-parser');
 
 class ChatList extends React.Component {
+
+  constructor(props){
+    super(props);
+
+    this.logout = this.logout.bind(this);
+  }
+
+  logout () {
+    console.log('token');
+    const expire = new Date().getTime();
+    document.cookie = "token=;path=/;expires=" + expire;
+    location.reload();
+  }
 
   render() {
 
@@ -27,10 +41,10 @@ class ChatList extends React.Component {
         }
       }
 
-
       return (
         <div className="panel column is-3 chat-list is-hidden-mobile">
           <p className="panel-heading chat-list-heading">
+            <button className="no-button menu-button" onClick={() => this.logout()}><img src="/img/logout-white.svg" className="menu-img"></img></button>
             Contacts
           </p>
           <div className="chat-list-overflow">

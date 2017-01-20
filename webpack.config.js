@@ -1,5 +1,5 @@
 module.exports = {
-  entry: './public/chatRoom/components/chatRoom.react.js',
+  entry: './public/views/chatRoom/components/chatRoom.react.js',
   output: {
     filename: 'bundle.js',
     path: './public/scripts/',

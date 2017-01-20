@@ -112,6 +112,14 @@ body {
   border-right: 1px solid #dbdbdb;
   flex-grow: 1; }
 
+.menu-button {
+  margin-right: 7px; }
+
+.menu-img {
+  display: inline-block;
+  width: 24px;
+  vertical-align: text-bottom; }
+
 .header-container {
   border-bottom: 1px solid #dbdbdb; }
 

@@ -26,12 +26,12 @@ auth.get('/views/chatRoom', (req, res, next) => {
         const date = new Date().getTime();
         const expiration = new Date(result.expiration_date).getTime();
         if (date < expiration) {
-          next();
+          return next();
         }
       }
+      res.redirect(401, '/views/login');
 
     });
-
   } else {
     res.redirect(401, '/views/login');
   }
@@ -81,7 +81,9 @@ auth.post('/sendcode', (request, response) => {
 
       console.log(data);
 
-      response.cookie('token', token);
+      console.log('DATA', new Date(expiration));
+
+      response.cookie('token', token, { expires: new Date(expiration) });
       response.writeHead(302, {
         Location: 'views/chatRoom',
         'x-auth': res.data.access_token,

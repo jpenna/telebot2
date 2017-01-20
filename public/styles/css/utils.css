@@ -24,9 +24,7 @@ button {
   border: none;
   outline: none; }
 
-.avatar-image {
-  border-radius: 50%;
-  border: #d2d2d2 1px solid;
-  box-shadow: #eaeaea 1px 1px 5px; }
+.content p:not(:last-child) {
+  margin-bottom: 0; }
 
 /*# sourceMappingURL=utils.css.map */
