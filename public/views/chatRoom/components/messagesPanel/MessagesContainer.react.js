@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const React = require('react')
 const MessageBox = require('./MessageBox.react');
 
@@ -8,7 +10,7 @@ class MessagesContainer extends React.Component {
     const messages = this.props.chats[this.props.activeId].messages;
 
     const conversation = messages.map((msg) => {
-      return <MessageBox key={Math.random() * new Date().getTime()} author={msg.author} message={msg.message} sentAt={msg.sentAt} type={msg.type}/>
+      return <MessageBox key={Math.random() * new Date().getTime()} author={msg.author} message={msg.message} sentAt={msg.sentAt} type={msg.type} />
 
     });
 

@@ -69,7 +69,7 @@ class ChatBox extends React.Component {
           </figure>
           <div className="media-content">
             <div className="content">
-              <div className="level">
+              <div className="level is-mobile">
                 <div className="level-left">
                   <p className="level-item preview-name">{this.props.name}</p>
                 </div>

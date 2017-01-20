@@ -54,7 +54,7 @@ class MessagesSpace extends React.Component {
         </figure>
         <div className="media-content msg-context">
           <div className="content">
-            <div className="level message-info">
+            <div className="level message-info is-mobile">
               <div className="level-left">
                 <p className={nameStyle}>{this.props.author}</p>
                 {this.props.type == "bot" && <span className="tag is-dark-blue bot-small">BOT</span>}

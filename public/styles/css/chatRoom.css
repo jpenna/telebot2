@@ -65,9 +65,11 @@ body {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  height: 100%; }
 
 .chat-list-heading {
+  position: relative;
   line-height: 62px;
   padding: 0;
   padding-left: 20px;
@@ -102,10 +104,19 @@ body {
   font-size: 10px;
   font-weight: 300; }
 
+.chat-list-menu {
+  width: 230px;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: white; }
+
 .messages-panel {
   position: relative;
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  height: 100%; }
 
 .chat-list-overflow {
   overflow: auto;
@@ -115,15 +126,37 @@ body {
 .menu-button {
   margin-right: 7px; }
 
-.menu-img {
+.header-img {
   display: inline-block;
   width: 24px;
   vertical-align: text-bottom; }
+
+.menu-img {
+  position: absolute;
+  left: 4%;
+  top: 0;
+  bottom: 0;
+  margin: auto; }
+
+.close-contacts {
+  color: white;
+  position: absolute;
+  right: 7px;
+  top: 0;
+  bottom: 0;
+  font-size: 20px;
+  margin: auto;
+  border: solid 1px rgba(255, 255, 255, 0.65);
+  height: 26px;
+  border-radius: 50%;
+  width: 26px;
+  line-height: 0px; }
 
 .header-container {
   border-bottom: 1px solid #dbdbdb; }
 
 .chat-name {
+  position: relative;
   line-height: 30px;
   text-align: right;
   padding: 16px 4% 16px;

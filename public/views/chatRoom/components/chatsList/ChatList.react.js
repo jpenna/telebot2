@@ -9,7 +9,7 @@ class ChatList extends React.Component {
   constructor(props){
     super(props);
 
-    this.logout = this.logout.bind(this);
+    // this.logout = this.logout.bind(this);
   }
 
   logout () {
@@ -19,10 +19,23 @@ class ChatList extends React.Component {
     location.reload();
   }
 
+  hideContactsPanel() {
+    const contactsPanel = document.getElementById('contactsPanel');
+    contactsPanel.setAttribute('hidden', '');
+  }
+
   render() {
 
     const list = [];
     const chatList = this.props.chats;
+
+    // set is-hidden-mobile if it is to be hidden (it shouldn't when menu button is pressed)
+    let divClass = 'panel column is-3 chat-list is-hidden-mobile';
+    let buttonShow;
+    if (this.props.showMobile) {
+      divClass = 'panel column is-3 chat-list';
+      buttonShow = true;
+    }
 
     for (let key in chatList) {
       let chat = chatList[key];
@@ -42,10 +55,14 @@ class ChatList extends React.Component {
       }
 
       return (
-        <div className="panel column is-3 chat-list is-hidden-mobile">
+        <div className={divClass}>
           <p className="panel-heading chat-list-heading">
-            <button className="no-button menu-button" onClick={() => this.logout()}><img src="/img/logout-white.svg" className="menu-img"></img></button>
+            <button className="no-button menu-button" onClick={() => this.logout()}><img src="/img/logout-white.svg" className="header-img"></img></button>
             Contacts
+            { buttonShow ?
+                <button className="no-button menu-button close-contacts" onClick={() => this.hideContactsPanel()}>&times;</button>
+                : ''
+            }
           </p>
           <div className="chat-list-overflow">
             {list}

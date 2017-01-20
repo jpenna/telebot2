@@ -120,7 +120,7 @@ class ChatRoom extends React.Component {
       <div className="box columns column is-10 is-offset-1 telebot-app">
         <ChatList chats={this.state.chats} activeId={this.state.activeId} changeActive={this.changeActive}/>
         <MessagesPanel chats={this.state.chats} activeId={this.state.activeId} name={this.state.name}
-          newMessage={this.newMessage}/>
+          newMessage={this.newMessage} changeActive={this.changeActive}/>
       </div>
     )
   }

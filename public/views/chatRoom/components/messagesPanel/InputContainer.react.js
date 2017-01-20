@@ -44,7 +44,7 @@ class InputContainer extends React.Component {
             <img className="avatar-image" src="/img/telebot.jpg"/>
           </figure>
 
-          <div className="column is-10 no-flex-grow">
+          <div className="column is-10">
             <form id="messageForm" onSubmit={(e) => this.submitMessage(e)}>
               <textarea className="textarea textbox"
                 placeholder="Type your message..."
