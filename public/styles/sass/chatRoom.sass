@@ -198,6 +198,9 @@ body
   display: flex
   //flex-direction: column
 
+.avatar-figure
+  min-width: 95px
+
 .textbox
   border: none
   box-shadow: none
@@ -205,7 +208,8 @@ body
   min-height: 73px
   font-size: 0.8rem
   width: auto
-  min-width: 83%
+  width: 83%
+  min-width: 75%
   margin: auto
   display: inline-block
   vertical-align: middle
@@ -232,7 +236,9 @@ body
 
   background-color: $color
   height: 73px
-  width: 57px
+  width: 13%
+  max-width: 57px
+  min-width: 35px
 
   &:hover
     background-color: darken($color, 10%)

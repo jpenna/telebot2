@@ -40,7 +40,7 @@ class InputContainer extends React.Component {
     return (
       <div>
         <div className="columns input-container no-margin-bot">
-          <figure className="column is-2 no-flex-grow">
+          <figure className="column is-2 no-flex-grow avatar-figure">
             <img className="avatar-image" src="/img/telebot.jpg"/>
           </figure>
 
