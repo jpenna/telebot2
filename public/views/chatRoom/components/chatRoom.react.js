@@ -39,7 +39,7 @@ class ChatRoom extends React.Component {
 
   insertNewClient(clientData) {
     const client = {
-      chat_id: clientData.chatId,
+      chatId: clientData.chatId,
       firstname: clientData.firstname,
       lastname: clientData.lastname,
       messages: []
@@ -55,7 +55,7 @@ class ChatRoom extends React.Component {
     window.newChat = (data) => {
 
       const client = {
-        chatId: data.chat_id,
+        chatId: data.chatId,
         firstname: data.firstname,
         lastname: data.lastname,
         messages: []
@@ -94,7 +94,7 @@ class ChatRoom extends React.Component {
     const text = message.message;
     const sentAt = message.sentAt;
 
-    socket.emit('sendTelegram', {chat_id: activeChat, type: type, message: text});
+    socket.emit('sendTelegram', {chatId: activeChat, type: type, message: text});
 
     this.insertNewMessage(activeChat, author, type, text, sentAt);
   }
@@ -140,14 +140,15 @@ socket.on('populateChats', (data) => {
     });
 
   } else {
+
     // Populate chats panel and messages
     data.chats.forEach((chat, key) => {
-      chats[chat.chat_id] = chat;
+      chats[chat.chatId] = chat;
     });
 
     initialState = {
       chats,
-      activeId: data.chats[0].chat_id,
+      activeId: data.chats[0].chatId,
     };
 
     require('../../../scripts/socketMethods');

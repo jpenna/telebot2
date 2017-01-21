@@ -9,16 +9,32 @@ const web = {
   Send message to web interface
   @param data Object expect {chat_id, type, author, message, sentAt}
   */
-  sendMessage(data) {
-    io.emit('newMessage', data);
+  sendMessage(chatId, type, author, message, sentAt) {
+    const messageData = {
+      author,
+      chatId,
+      type,
+      message,
+      sentAt
+    };
+
+    io.emit('newMessage', messageData);
   },
 
   /*
   Send chat to chat list in web interface
   @param data Object expect {chat_id, type, firstname, lastname}
   */
-  newChat(data) {
-    io.emit('newChat', data);
+  newChat(chatId, chatType, firstname, lastname) {
+
+    const chatData = {
+      chatId,
+      chatType,
+      firstname,
+      lastname
+    };
+
+    io.emit('newChat', chatData);
   },
 
 };
@@ -29,7 +45,7 @@ io.on('connection', (socket) => {
   socket.on('getChats', () => {
     Chat.findChats().then((chatsResult) => {
       let chats;
-      console.log(chatsResult);
+
       if (!chatsResult) {
         chats = undefined;
       } else {
@@ -61,7 +77,7 @@ io.on('connection', (socket) => {
   socket.on('sendTelegram', (data) => {
 
     const postData = {
-      chat_id: data.chat_id,
+      chat_id: data.chatId,
       type: data.type,
       text: data.message,
     };
@@ -69,14 +85,13 @@ io.on('connection', (socket) => {
     // Send message to API
     axios.post(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`, postData)
     .then((res) => {
-      
-      // After sent, insert message in DB
-      const message = {
-        author: 'Telebot',
-        message: res.data.message
-      };
 
-      Chat.insertMessage(data.chat_id, message);
+      // After sent, insert message in DB
+      const author = 'Telebot';
+      const message = res.data.message;
+      const sentAt = new Date().getTime();
+
+      Chat.insertMessage(data.chatId, data.type, author, message, sentAt);
 
     }).catch(err => console.log('on.sendTelegram:', err));
 

@@ -102,7 +102,7 @@
 	    key: 'insertNewClient',
 	    value: function insertNewClient(clientData) {
 	      var client = {
-	        chat_id: clientData.chatId,
+	        chatId: clientData.chatId,
 	        firstname: clientData.firstname,
 	        lastname: clientData.lastname,
 	        messages: []
@@ -121,7 +121,7 @@
 	      window.newChat = function (data) {
 
 	        var client = {
-	          chatId: data.chat_id,
+	          chatId: data.chatId,
 	          firstname: data.firstname,
 	          lastname: data.lastname,
 	          messages: []
@@ -164,7 +164,7 @@
 	      var text = message.message;
 	      var sentAt = message.sentAt;
 
-	      socket.emit('sendTelegram', { chat_id: activeChat, type: type, message: text });
+	      socket.emit('sendTelegram', { chatId: activeChat, type: type, message: text });
 
 	      this.insertNewMessage(activeChat, author, type, text, sentAt);
 	    }
@@ -216,14 +216,16 @@
 	      location.reload();
 	    });
 	  } else {
+
+	    console.log('data', data.chats);
 	    // Populate chats panel and messages
 	    data.chats.forEach(function (chat, key) {
-	      chats[chat.chat_id] = chat;
+	      chats[chat.chatId] = chat;
 	    });
 
 	    initialState = {
 	      chats: chats,
-	      activeId: data.chats[0].chat_id
+	      activeId: data.chats[0].chatId
 	    };
 
 	    __webpack_require__(247);
@@ -21873,10 +21875,8 @@
 	              React.createElement('img', { className: 'avatar-image is-50x50', src: '/img/avatars/' + this.props.id + '.jpg',
 	                ref: function ref(img) {
 	                  return _this2.chatAvatar = img;
-	                },
-	                onError: function onError() {
-	                  if (_this2.chatAvatar.src !== _this2.props.avatarPlaceholder) _this2.chatAvatar.src = _this2.props.avatarPlaceholder;
-	                } })
+	                }
+	              })
 	            )
 	          ),
 	          React.createElement(
@@ -30581,7 +30581,7 @@
 
 	      var thisChat = this.props.chats[this.props.activeId];
 
-	      var chatId = thisChat.chat_id;
+	      var chatId = thisChat.chatId;
 	      var messages = thisChat.messages;
 
 	      var conversation = messages.map(function (msg) {
@@ -30876,9 +30876,9 @@
 	socket.on('newChat', function (chatData) {
 
 	  var chat = {
-	    chatId: chatData.chat_id,
-	    first_name: chatData.firstname,
-	    last_name: chatData.lastname,
+	    chatId: chatData.chatId,
+	    firstname: chatData.firstname,
+	    lastname: chatData.lastname,
 	    messages: []
 	  };
 
@@ -30888,7 +30888,7 @@
 	socket.on('newMessage', function (msgData) {
 
 	  var msg = {
-	    chatId: msgData.chat_id,
+	    chatId: msgData.chatId,
 	    author: msgData.author,
 	    type: msgData.type,
 	    text: msgData.message,

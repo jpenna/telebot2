@@ -4,53 +4,60 @@ const botReply = require('./botReply');
 const utils = require('./utils');
 const { Chat } = require('../db/model/chat');
 
-// bot.all((msg, reply, next) => {
-//   Chat.findChatById(msg.chat.id).then((result) => {
-//
-//   });
-//   next();
-// });
-
 /* handles /start command */
 bot.command('start', (msg, reply) => {
   const chat = msg.chat;
 
+  const chatId = chat.id;
+  const chatType = chat.type;
+  const firstname = chat.firstname;
+  const lastname = chat.lastname;
+
   // get user avatar and save file in /img/avatars/[id].jpg
-  utils.getUserAvatar(chat.id);
+  utils.getUserAvatar(chatId);
 
-  const chatData = {
-    chat_id: chat.id,
-    chatType: chat.type,
-    firstname: chat.firstname,
-    lastname: chat.lastname,
-  };
-
-  Chat.insertChat(chatData).then(() => {
-    web.newChat(chatData);
+  Chat.insertChat(chatId, chatType, firstname, lastname).then(() => {
+    web.newChat(chatId, chatType, firstname, lastname);
     botReply.send(reply, msg, 'Welcome!');
   });
 });
+//
+// describe('bot /start', () => {
+//   it('should create chatData ')
+// })
 
 /* handles text messages */
 bot.text((msg, reply) => {
   const chat = msg.chat;
 
-  const messageData = {
-    chat_id: chat.id,
-    chatType: chat.type,
-    firstname: chat.firstname,
-    lastname: chat.lastname,
-    author: chat.firstname,
-    type: 'client',
-    message: msg.text,
-    sentAt: new Date().getTime(),
-  };
+  const chatId = chat.id;
+  const chatType = chat.type;
+  const firstname = chat.firstname;
+  const lastname = chat.lastname;
+  const type = 'client';
+  const message = msg.text;
+  const sentAt = new Date().getTime();
 
-  Chat.insertMessage(messageData).then((result) => {
-    if (result === 'newChat') {
-      web.newChat(messageData);
-    }
-    web.sendMessage(messageData);
-    botReply.send(reply, msg, 'Hello!');
-  });
+  function saveMessage() {
+    Chat.insertMessage(chatId, type, firstname, message, sentAt)
+    .then((result) => {
+      // Success or failed?
+      if (!result) {
+        // Fail: insert Chat
+        Chat.insertChat(chatId, chatType, firstname, lastname)
+        .then(() => {
+          // Then repeat and send NEW CHAT to web
+          saveMessage();
+          web.newChat(chatId, chatType, firstname, lastname);
+        });
+      } else {
+        // Success: send message to web and reply from bot
+        web.sendMessage(chatId, type, firstname, message, sentAt);
+        botReply.send(reply, msg, 'Hello!');
+      }
+    }).catch(err => console.log(err));
+  }
+
+  saveMessage();
+
 });

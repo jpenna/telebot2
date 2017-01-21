@@ -5,9 +5,9 @@
 socket.on('newChat', (chatData) => {
 
   const chat = {
-    chatId: chatData.chat_id,
-    first_name: chatData.firstname,
-    last_name: chatData.lastname,
+    chatId: chatData.chatId,
+    firstname: chatData.firstname,
+    lastname: chatData.lastname,
     messages: []
   };
 
@@ -18,7 +18,7 @@ socket.on('newChat', (chatData) => {
 socket.on('newMessage', (msgData) => {
 
   const msg = {
-    chatId: msgData.chat_id,
+    chatId: msgData.chatId,
     author: msgData.author,
     type: msgData.type,
     text: msgData.message,

@@ -66,11 +66,7 @@ class ChatBox extends React.Component {
             <p className="image is-50x50">
               <img className="avatar-image is-50x50" src={`/img/avatars/${this.props.id}.jpg`}
               ref = { img => this.chatAvatar = img }
-              onError={() => {
-                if (this.chatAvatar.src !== this.props.avatarPlaceholder)
-                this.chatAvatar.src = this.props.avatarPlaceholder;
-              }
-            }/>
+            />
           </p>
         </figure>
         <div className="media-content">

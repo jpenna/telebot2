@@ -8,7 +8,7 @@ class MessagesContainer extends React.Component {
   render() {
     const thisChat = this.props.chats[this.props.activeId];
 
-    const chatId = thisChat.chat_id;
+    const chatId = thisChat.chatId;
     const messages = thisChat.messages;
 
     const conversation = messages.map((msg) => {
