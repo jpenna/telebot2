@@ -6,8 +6,8 @@ const utils = {};
 
 utils.getUserAvatar = (userId) => {
   // get user profile photos
-  axios.post(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/getUserProfilePhotos`,
-    { user_id: userId }
+  axios.get(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/getUserProfilePhotos`,
+    { params: { user_id: userId } }
   ).then((resPrhotos) => { // PROMISE 1
     const bodyPhotos = resPrhotos.data;
 
@@ -16,8 +16,8 @@ utils.getUserAvatar = (userId) => {
       const fileId = bodyPhotos.result.photos[0][0].file_id;
 
       // get user profile path
-      axios.post(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/getFile`,
-        { file_id: fileId }
+      axios.get(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/getFile`,
+        { params: { file_id: fileId } }
       ).then((resPath) => { // PROMISE 2
         const bodyPath = resPath.data;
 
