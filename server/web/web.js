@@ -51,13 +51,13 @@ io.on('connection', (socket) => {
       } else {
         // Just send all messages for active chat. The others get last message for preview
         chats = chatsResult.map((obj, key) => {
-          const msg = obj;
+          const chat = obj;
           if (key !== 0) {
-            msg.messages = [
-              msg.messages[msg.messages.length - 1],
+            chat.messages = [
+              chat.messages[chat.messages.length - 1],
             ];
           }
-          return msg;
+          return chat;
         });
       }
 
@@ -69,6 +69,9 @@ io.on('connection', (socket) => {
   // Send chat messages on change active chat
   socket.on('getChatMessages', (chatId) => {
     Chat.findChatById(chatId).then((data) => {
+      if (!data) {
+        return;
+      }
       socket.emit('populateChatMessages', { messages: data.messages });
     }).catch(err => console.log(err));
   });
@@ -78,17 +81,18 @@ io.on('connection', (socket) => {
 
     const postData = {
       chat_id: data.chatId,
-      type: data.type,
       text: data.message,
     };
 
+    console.log('oisdf');
+
     // Send message to API
     axios.post(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`, postData)
-    .then((res) => {
+    .then(() => {
 
       // After sent, insert message in DB
       const author = 'Telebot';
-      const message = res.data.message;
+      const message = data.message;
       const sentAt = new Date().getTime();
 
       Chat.insertMessage(data.chatId, data.type, author, message, sentAt);

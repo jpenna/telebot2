@@ -10,9 +10,9 @@ auth.use(bodyParser.urlencoded({ extended: false }));
 auth.use(bodyParser.json());
 auth.use(cookieParser());
 
-// var csrf_guid = Guid.raw();
-const meEndpointBaseUrl = `https://graph.accountkit.com/${process.env.FB_API_VERSION}/me`;
-const tokenExchangeBaseUrl = `https://graph.accountkit.com/${process.env.FB_API_VERSION}/access_token`;
+// // var csrf_guid = Guid.raw();
+// const meEndpointBaseUrl = ;
+// const tokenExchangeBaseUrl = ;
 
 // Check if user can access chatRoom on request
 auth.get('/views/chatRoom', (req, res, next) => {
@@ -56,7 +56,7 @@ auth.post('/sendcode', (request, response) => {
   };
 
   // Exchange tokens
-  axios.get(tokenExchangeBaseUrl, { params })
+  axios.get(`https://graph.accountkit.com/${process.env.FB_API_VERSION}/access_token`, { params })
   .then((res) => {
 
     const meParams = {
@@ -64,7 +64,7 @@ auth.post('/sendcode', (request, response) => {
     };
 
     // Get account details
-    axios.get(meEndpointBaseUrl, { params: meParams }
+    axios.get(`https://graph.accountkit.com/${process.env.FB_API_VERSION}/me`, { params: meParams }
     ).then((meRes) => {
       const data = meRes.data;
 
@@ -97,15 +97,12 @@ auth.post('/sendcode', (request, response) => {
 
             response.end();
 
-          }).catch(err => console.log(err));
+          }).catch((err) => { throw new Error('Insert user:', err); });
         }
-
-      });
-
-
-    }).catch(err => console.log('FB /ME ERROR:', err));
+      }).catch((err) => { throw new Error('Find user by ID:', err); });
+    }).catch((err) => { throw new Error('FB /ME ERROR:', err); });
   }).catch((err) => {
-    console.log('FB /TOKEN EXCHANGE ERROR:', err);
+    console.log('FB auth:', err);
     response.send('Something went wrong.\nSorry, sir.');
   });
 });

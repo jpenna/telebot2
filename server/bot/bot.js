@@ -21,10 +21,6 @@ bot.command('start', (msg, reply) => {
     botReply.send(reply, msg, 'Welcome!');
   });
 });
-//
-// describe('bot /start', () => {
-//   it('should create chatData ')
-// })
 
 /* handles text messages */
 bot.text((msg, reply) => {

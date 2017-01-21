@@ -5,7 +5,6 @@
 const web = require('../web/web');
 const { Chat } = require('../db/model/chat');
 
-
 // send reply to Telegram, web interface and persist data
 function send(reply, botAPIMsg, msg) {
 
