@@ -1,11 +1,11 @@
 /* eslint no-undef:off*/
 
 const expect = require('expect');
-const web = require('../web/web');
-const { io } = require('../server.js');
-const chatSeed = require('./seed/chatSeed');
+const web = require('../../web/web');
+const { io } = require('../../server.js');
+const chatSeed = require('../seed/chatSeed');
 const socket = require('socket.io-client');
-const { Chat } = require('../db/model/chat');
+const { Chat } = require('../../db/model/chat');
 const axios = require('axios');
 
 describe('web', () => {

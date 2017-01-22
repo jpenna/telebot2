@@ -71,17 +71,14 @@ const msg1 = {
   _id: id1,
 };
 
-// const msg2 = {
-//   author: 'Juliano',
-//   message: 'Fire in the hole!',
-//   _id: id2,
-// };
-
 function populateChats() {
-  return Chat.remove({}, () => {
-    new Chat(chat1).save();
-    new Chat(chat2).save();
-  });
+  return Chat.remove({})
+  .then(
+    () => new Chat(chat1).save()
+    .then(
+      () => new Chat(chat2).save()
+    )
+  );
 }
 
 module.exports = {

@@ -1,32 +1,31 @@
-/* eslint-disable */
+/* eslint no-undef:off*/
+
 require('../../config/config');
 const expect = require('expect');
 const { User } = require('../../db/model/user');
+const userSeed = require('../seed/userSeed');
 
-describe.only('User', () => {
+describe('User', () => {
   before(() => {
-    user1 = {
-      id: 1,
-      token: 'asdfqwer',
-      email: 'em@ex.com',
-      expiration_date: new Date(),
-    };
+    user1 = userSeed.user1;
 
-    id = 2;
-    email = 'email@ex.com';
-    token = '123abc';
-    expiration = new Date();
+    user3 = userSeed.user3;
+    id = user3.id;
+    email = user3.email;
+    token = user3.token;
+    expiration = user3.expiration;
   });
 
 
-  beforeEach(() => {
-    User.remove({}).exec();
-    new User(user1).save();
+  beforeEach((done) => {
+    userSeed.populateUsers().then(() => {
+      done();
+    });
   });
 
   describe('insertUser()', () => {
     it('should insert new user on DB', (done) => {
-      User.insertUser(id, email, token, expiration).then((user) => {
+      User.insertUser(id, email, token, expiration).then(() => {
         User.findOne({ id }).then((user) => {
           expect(user).toExist();
           expect(user.token).toBe(token);

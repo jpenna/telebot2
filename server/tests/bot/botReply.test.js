@@ -11,7 +11,7 @@ describe('botReply', () => {
   after(() => {
     expect.restoreSpies();
   })
-  
+
   describe('send()', () => {
 
     before(() => {

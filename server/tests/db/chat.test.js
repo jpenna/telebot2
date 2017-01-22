@@ -1,4 +1,4 @@
-/* eslint no-undef:off */
+/* eslint no-undef:off, camelcase:off */
 
 require('../../config/config');
 const expect = require('expect');
@@ -24,7 +24,13 @@ describe('Chat', () => {
   });
 
   beforeEach((done) => {
-    chatSeed.populateChats().then(() => done());
+    chatSeed.populateChats().then(
+      () => done()
+    );
+  });
+
+  after(() => {
+    expect.restoreSpies();
   });
 
   describe('insertChat()', () => {
@@ -55,8 +61,8 @@ describe('Chat', () => {
 
   describe('findChats()', () => {
     it('should return all chats', (done) => {
-      Chat.findChats().then((data) => {
-        expect(data.length).toBe(2);
+      Chat.findChats().then((chats) => {
+        expect(chats.length).toBe(2);
         done();
       });
     });
