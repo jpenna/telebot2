@@ -1,19 +1,19 @@
 /* eslint no-undef:off */
 
-require('../config/config');
+require('../../config/config');
 const expect = require('expect');
-const { bot } = require('../bot/bot');
-const chatSeed = require('./seed/chatSeed');
-const utils = require('../bot/utils');
-const botgramSeed = require('./seed/botgramSeed');
-const botReply = require('../bot/botReply');
-const web = require('../web/web');
-const { Chat } = require('../db/model/chat');
+const { bot } = require('../../bot/bot');
+const chatSeed = require('../seed/chatSeed');
+const utils = require('../../bot/utils');
+const botgramSeed = require('../seed/botgramSeed');
+const botReply = require('../../bot/botReply');
+const web = require('../../web/web');
+const { Chat } = require('../../db/model/chat');
 
 
 describe('bot', () => {
   before(() => {
-    // Set spys
+    // Set spies
     replySpy = expect.spyOn(botReply, 'send');
     avatarSpy = expect.spyOn(utils, 'getUserAvatar');
     sendSpy = expect.spyOn(web, 'sendMessage');
@@ -40,6 +40,10 @@ describe('bot', () => {
     noChatName = noChat.chat.first_name;
     noChatMessage = noChat.text;
     noChatSentAt = new Date(noChat.date * 1000).toISOString(); // Response in Unix format (sec)
+  });
+
+  after(() => {
+    expect.restoreSpies();
   });
 
   beforeEach((done) => {
@@ -164,20 +168,3 @@ describe('bot', () => {
     });
   }); // describe(text)
 }); // describe(bot)
-
-describe('botReply', () => {
-  describe('send()', () => {
-    it('should reply client with msg param');
-    it('should send message to web');
-    it('should save message in db');
-  });
-});
-
-describe('utils', () => {
-  describe('getUserAvatar()', () => {
-    it('should post /getUserProfilePhotos and return UserProfilePhotos obj (file_id, *_size, *_path)');
-    it('should post /getFile and return file_path');
-    it('should create write stream to /public/img/avatars');
-    it('should request /file/*/file_path and pipe response');
-  });
-});
