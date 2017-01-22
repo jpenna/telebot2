@@ -13,8 +13,7 @@ const utils = require('../../bot/utils');
 // const { Chat } = require('../../db/model/chat');
 const axios = require('axios');
 
-describe.only('utils', () => {
-
+describe('utils', () => {
   before(() => {
     // Set variables
     fileId = 123;
@@ -48,7 +47,11 @@ describe.only('utils', () => {
     utils.getUserAvatar(userId);
   });
 
-  describe.only('getUserAvatar()', () => {
+  after(() => {
+    expect.restoreSpies();
+  });
+
+  describe('getUserAvatar()', () => {
     it('should get /getUserProfilePhotos', () => {
       expect(axiosGetSpy).toHaveBeenCalled();
       expect(axiosGetSpy.calls[0].arguments).toInclude(get1)

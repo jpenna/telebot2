@@ -8,6 +8,10 @@ const web = require('../../web/web');
 const { Chat } = require('../../db/model/chat');
 
 describe('botReply', () => {
+  after(() => {
+    expect.restoreSpies();
+  })
+  
   describe('send()', () => {
 
     before(() => {

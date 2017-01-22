@@ -37,6 +37,10 @@ describe('web', () => {
     client1 = socket.connect(url, options);
   });
 
+  after(() => {
+    expect.restoreSpies();
+  })
+
   describe('sendMessage()', () => {
     it('should emit "newMessage" with messageData', () => {
       web.sendMessage(chatId, type, author, message, sentAt);

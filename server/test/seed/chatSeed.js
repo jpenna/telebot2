@@ -3,6 +3,7 @@ const { ObjectId } = require('mongodb');
 
 const id1 = new ObjectId();
 const id2 = new ObjectId();
+const id3 = new ObjectId();
 const sentAt = new Date();
 
 
@@ -54,6 +55,28 @@ const chat2 = {
   ]
 };
 
+const chat3 = {
+  _id: id3,
+  chatId: 3,
+  chatType: 'text',
+  firstname: 'Nacib',
+  lastname: 'Nacibius',
+  messages: []
+};
+
+const msg1 = {
+  author: 'Juliano',
+  message: 'GOGOGO',
+  type: 'user',
+  _id: id1,
+};
+
+// const msg2 = {
+//   author: 'Juliano',
+//   message: 'Fire in the hole!',
+//   _id: id2,
+// };
+
 function populateChats() {
   return Chat.remove({}, () => {
     new Chat(chat1).save();
@@ -62,5 +85,5 @@ function populateChats() {
 }
 
 module.exports = {
-  chat1, chat2, populateChats
+  chat1, chat2, chat3, msg1, populateChats
 };
