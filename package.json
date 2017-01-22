@@ -10,7 +10,7 @@
     "build": "webpack",
     "build-min": "webpack -p",
     "sass": "sass --watch public/styles/sass:public/styles/css",
-    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha */tests/*/**.tests.js",
+    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha */**/*.test.js",
     "test-watch": "nodemon --exec 'npm test'"
   },
   "author": "Juliano Penna",

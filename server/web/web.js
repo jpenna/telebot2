@@ -1,9 +1,10 @@
 const { io } = require('../server.js');
-const { request } = require('https');
 const { Chat } = require('../db/model/chat');
 const axios = require('axios');
 
-
+function p(x) {
+  return x;
+}
 const web = {
   /*
   Send message to web interface
@@ -11,14 +12,15 @@ const web = {
   */
   sendMessage(chatId, type, author, message, sentAt) {
     const messageData = {
-      author,
       chatId,
       type,
+      author,
       message,
       sentAt
     };
 
     io.emit('newMessage', messageData);
+    p('x');
   },
 
   /*

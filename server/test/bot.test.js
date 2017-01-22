@@ -1,3 +1,5 @@
+const expect = require('expect');
+
 describe('bot /start', () => {
   it('should create chat in DB');
   it('should send new chat to web');
