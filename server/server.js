@@ -16,7 +16,8 @@ app.use((req, res) => {
   res.redirect(404, '/views/login');
 });
 
-server.listen(3100);
+server.listen(process.env.PORT);
+
 
 module.exports = { io };
 

@@ -2,14 +2,8 @@ const { io } = require('../server.js');
 const { Chat } = require('../db/model/chat');
 const axios = require('axios');
 
-function p(x) {
-  return x;
-}
 const web = {
-  /*
-  Send message to web interface
-  @param data Object expect {chat_id, type, author, message, sentAt}
-  */
+  // Send message to web interface
   sendMessage(chatId, type, author, message, sentAt) {
     const messageData = {
       chatId,
@@ -20,13 +14,9 @@ const web = {
     };
 
     io.emit('newMessage', messageData);
-    p('x');
   },
 
-  /*
-  Send chat to chat list in web interface
-  @param data Object expect {chat_id, type, firstname, lastname}
-  */
+  // Send chat to chat list in web interface
   newChat(chatId, chatType, firstname, lastname) {
 
     const chatData = {
@@ -79,14 +69,12 @@ io.on('connection', (socket) => {
   });
 
   // Send message to Telegram client
-  socket.on('sendTelegram', (data) => {
+  socket.on('sendTelegram', (data, callback) => {
 
     const postData = {
       chat_id: data.chatId,
       text: data.message,
     };
-
-    console.log('oisdf');
 
     // Send message to API
     axios.post(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`, postData)
@@ -97,7 +85,12 @@ io.on('connection', (socket) => {
       const message = data.message;
       const sentAt = new Date().getTime();
 
-      Chat.insertMessage(data.chatId, data.type, author, message, sentAt);
+      Chat.insertMessage(data.chatId, data.type, author, message, sentAt).then(() => {
+        if (callback) {
+          callback();
+        }
+      });
+
 
     }).catch(err => console.log('on.sendTelegram:', err));
 

@@ -71,7 +71,7 @@ chatSchema.statics.findChats = function () {
 };
 
 chatSchema.statics.findChatById = function (chatId) {
-  return this.findOne({ chatId: chatId }).exec();
+  return this.findOne({ chatId }).exec();
 };
 
 chatSchema.methods.toJSON = function tJSON() {
