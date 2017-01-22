@@ -160,7 +160,7 @@
 	    value: function newMessage(message) {
 	      var activeChat = this.state.activeId;
 	      var author = 'Telebot';
-	      var type = 'user';
+	      var type = 'client';
 	      var text = message.message;
 	      var sentAt = message.sentAt;
 
@@ -217,7 +217,6 @@
 	    });
 	  } else {
 
-	    console.log('data', data.chats);
 	    // Populate chats panel and messages
 	    data.chats.forEach(function (chat, key) {
 	      chats[chat.chatId] = chat;
@@ -30671,12 +30670,12 @@
 	        sentAt = days + ', ' + time;
 	      }
 
-	      var isClient = this.props.type === 'client';
+	      var isUser = this.props.type === 'user';
 
-	      var isOrange = isClient ? 'is-orange' : '';
-	      var nameStyle = isOrange + ' level-item client-name';
+	      var isOrange = isUser ? 'is-orange' : '';
+	      var nameStyle = isOrange + ' level-item user-name';
 
-	      var avatar = isClient ? '/img/avatars/' + this.props.id + '.jpg' : '/img/telebot.jpg';
+	      var avatar = isUser ? '/img/avatars/' + this.props.id + '.jpg' : '/img/telebot.jpg';
 
 	      return React.createElement(
 	        'div',

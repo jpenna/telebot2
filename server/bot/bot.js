@@ -30,9 +30,9 @@ bot.text((msg, reply) => {
   const chatType = chat.type;
   const firstname = chat.firstname;
   const lastname = chat.lastname;
-  const type = 'client';
+  const type = 'user';
   const message = msg.text;
-  const sentAt = new Date().getTime();
+  const sentAt = msg.date;
 
   function saveMessage() {
     Chat.insertMessage(chatId, type, firstname, message, sentAt)
@@ -55,5 +55,6 @@ bot.text((msg, reply) => {
   }
 
   saveMessage();
-
 });
+
+module.exports = { bot };

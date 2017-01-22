@@ -55,7 +55,7 @@ const chat2 = {
 };
 
 function populateChats() {
-  Chat.remove({}, () => {
+  return Chat.remove({}, () => {
     new Chat(chat1).save();
     new Chat(chat2).save();
   });

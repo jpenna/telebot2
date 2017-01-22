@@ -90,7 +90,7 @@ class ChatRoom extends React.Component {
   newMessage(message) {
     const activeChat = this.state.activeId;
     const author = 'Telebot';
-    const type = 'user';
+    const type = 'client';
     const text = message.message;
     const sentAt = message.sentAt;
 

@@ -41,12 +41,12 @@ class MessagesSpace extends React.Component {
       sentAt = days + ', ' + time
     }
 
-    const isClient = this.props.type === 'client';
+    const isUser = this.props.type === 'user';
 
-    const isOrange = isClient ? 'is-orange' : '';
-    const nameStyle = `${isOrange} level-item client-name`;
+    const isOrange = isUser ? 'is-orange' : '';
+    const nameStyle = `${isOrange} level-item user-name`;
 
-    const avatar = isClient ? `/img/avatars/${this.props.id}.jpg` : `/img/telebot.jpg`;
+    const avatar = isUser ? `/img/avatars/${this.props.id}.jpg` : `/img/telebot.jpg`;
 
     return (
 

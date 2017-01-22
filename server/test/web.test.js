@@ -8,7 +8,7 @@ const socket = require('socket.io-client');
 const { Chat } = require('../db/model/chat');
 const axios = require('axios');
 
-describe.only('web', () => {
+describe('web', () => {
   before(() => {
     // Chat data
     author = 'Juliano';
