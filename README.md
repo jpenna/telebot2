@@ -7,20 +7,20 @@ Chatbot for Telegram.
 2. Set the configuration variables at `config.json`
 3. Run `npm start` from root path
 4. Access `/views/login` over a HTTPS protocol (try **ngrok** for tunneling)
-5. Login (set Facebook Account Kit Ser URLs to allow the HTTPS address you are using)
+5. Login (set Facebook Account Kit Server URLs to allow the HTTPS address you are using)
 6. Talk
 
 ### Configuration
 
-Configuration variables are set in config.json.
+Configuration variables are set in **config.json**.
 
 Use the `config-sample.json` to set your variables and rename it to `config.json`.
 
-a `dev` property for development variable,
+`dev`: for development variables
 
-a `test` property for test variables
+`test`: for test variables
 
-and `default` property for shared environment variables.
+`default` for shared environment variables
 ````
 {
   "dev": {
