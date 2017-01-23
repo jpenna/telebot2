@@ -1,3 +1,4 @@
+require('../../config/config');
 const { Chat } = require('../../db/model/chat');
 const { ObjectId } = require('mongodb');
 

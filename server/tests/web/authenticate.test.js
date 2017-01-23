@@ -21,7 +21,7 @@ describe('authenticate', () => {
 
     it('should check token cookie', (done) => {
       request(app)
-      .get('/views')
+      .get('/views/chatRoom')
       .set('Cookie', `token=${token}`)
       .end((err) => {
         expect(findUserSpy).toHaveBeenCalled();
@@ -34,8 +34,8 @@ describe('authenticate', () => {
       findUserSpy.reset();
 
       request(app)
-      .get('/views')
-      .expect(401)
+      .get('/views/chatRoom')
+      .expect(303)
       .expect('x-authorization', 'No token cookie')
       .expect('location', '/views/login')
       .end((err) => {
@@ -48,9 +48,9 @@ describe('authenticate', () => {
       findUserSpy.andReturn(new Promise(resolve => resolve()));
 
       request(app)
-      .get('/views')
+      .get('/views/chatRoom')
       .set('Cookie', `token=${token}`)
-      .expect(401)
+      .expect(303)
       .expect('x-authorization', 'No user found')
       .expect('location', '/views/login')
       .end((err) => {
@@ -66,9 +66,9 @@ describe('authenticate', () => {
       }));
 
       request(app)
-      .get('/views')
+      .get('/views/chatRoom')
       .set('Cookie', `token=${token}`)
-      .expect(401)
+      .expect(303)
       .expect('x-authorization', 'Token expired')
       .expect('location', '/views/login')
       .end((err) => {

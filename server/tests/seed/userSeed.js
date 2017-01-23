@@ -1,3 +1,4 @@
+require('../../config/config');
 const { User } = require('../../db/model/user');
 
 const user1 = {
