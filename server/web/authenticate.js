@@ -16,12 +16,12 @@ auth.use(cookieParser());
 
 // Check if user can access chatRoom on request
 auth.get('/views', (req, res, next) => {
+
   // Check token cookie
   if (req.cookies && req.cookies.token) {
 
     // Check token cookie value on DB
     User.findUserByToken(req.cookies.token).then((result) => {
-
       if (result) {
         const date = new Date().getTime();
         const expiration = new Date(result.expiration_date).getTime();
@@ -30,19 +30,24 @@ auth.get('/views', (req, res, next) => {
         if (date < expiration) {
           return next();
         }
-        console.log('Token expired');
-      }
+        res.set('x-authorization', 'Token expired')
+        .redirect(401, '/views/login');
 
-      // No user found or token expired
-      console.log('No user found');
-      res.redirect(401, '/views/login');
+
+      } else {
+        // No user found or token expired
+        res.set('x-authorization', 'No user found')
+        .redirect(401, '/views/login');
+
+      }
     });
 
   } else {
     // No cookie token
-    console.log('No cookie token');
-    res.redirect(401, '/views/login');
+    res.set('x-authorization', 'No token cookie')
+    .redirect(401, '/views/login');
   }
+
 });
 
 // Route for Facebook authentication handlers

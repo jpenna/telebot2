@@ -19,7 +19,7 @@ app.use((req, res) => {
 server.listen(process.env.PORT);
 
 
-module.exports = { io };
+module.exports = { app, io };
 
 // run bot
 require('./bot/bot');

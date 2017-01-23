@@ -78,7 +78,7 @@ class ChatRoom extends React.Component {
 
     this.setState({ chats });
   }
-  
+
   scrollBottom() {
     const messageArea = document.getElementsByClassName('messages-container');
     messageArea[0].scrollTop = messageArea[0].scrollHeight;
