@@ -1,3 +1,5 @@
+/* eslint react/prop-types:off */
+
 const React = require('react');
 
 class InputContainer extends React.Component {
@@ -41,29 +43,31 @@ class InputContainer extends React.Component {
       <div>
         <div className="columns input-container no-margin-bot">
           <figure className="column is-2 no-flex-grow avatar-figure">
-            <img className="avatar-image" src="/img/telebot.jpg"/>
+            <img className="avatar-image" src="/img/telebot.jpg" alt="avatar" />
           </figure>
 
           <div className="column is-10">
-            <form id="messageForm" onSubmit={(e) => this.submitMessage(e)}>
-              <textarea className="textarea textbox"
+            <form id="messageForm" onSubmit={e => this.submitMessage(e)}>
+              <textarea
+                className="textarea textbox"
                 placeholder="Type your message..."
                 value={this.state.message}
-                onKeyPress={(e) => this.submitOnEnter(e)}
-                onChange={(msg) => this.setMessage(msg)}/>
-                <span className="send-button-container">
-                  <button className="send-button" type="submit">
-                    <span className="icon">
-                      <i className="fa fa-arrow-right send-arrow"/>
-                    </span>
-                  </button>
-                </span>
-              </form>
-            </div>
+                onKeyPress={e => this.submitOnEnter(e)}
+                onChange={msg => this.setMessage(msg)}
+              />
+              <span className="send-button-container">
+                <button className="send-button" type="submit">
+                  <span className="icon">
+                    <i className="fa fa-arrow-right send-arrow" />
+                  </span>
+                </button>
+              </span>
+            </form>
           </div>
         </div>
-      )
-    }
+      </div>
+    );
   }
+}
 
-  module.exports = InputContainer;
+module.exports = InputContainer;

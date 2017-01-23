@@ -1,4 +1,5 @@
-/* eslint-disable */
+/* eslint react/prop-types:off, no-undef:off*/
+
 const React = require('react');
 const ReactDOM = require('react-dom');
 const ChatList = require('./chatsList/ChatList.react');
@@ -11,8 +12,8 @@ class ChatRoom extends React.Component {
 
     this.state = {
       chats: props.chats.chats,
-      activeId: props.chats.activeId,
-    }
+      activeId: props.chats.activeId
+    };
 
     this.avatarPlaceholder = '/img/mickey.jpg';
     // this.avatarPlaceholder = '/img/avatar-placeholder.png';
@@ -23,34 +24,6 @@ class ChatRoom extends React.Component {
     this.insertNewClient = this.insertNewClient.bind(this);
   }
 
-  insertNewMessage(chatId, author, type, text, sentAt) {
-    const chatMessage = {
-      author: author,
-      type: type,
-      message: text,
-      sentAt: sentAt
-    }
-
-    const newChat = this.state.chats;
-    newChat[chatId].messages.push(chatMessage);
-
-    this.setState({chats: newChat})
-  }
-
-  insertNewClient(clientData) {
-    const client = {
-      chatId: clientData.chatId,
-      firstname: clientData.firstname,
-      lastname: clientData.lastname,
-      messages: []
-    }
-
-    const chats = this.state.chats;
-    chats[clientData.chatId] = client;
-
-    this.setState({chats: chats});
-  }
-
   componentWillMount() {
     window.newChat = (data) => {
 
@@ -59,10 +32,10 @@ class ChatRoom extends React.Component {
         firstname: data.firstname,
         lastname: data.lastname,
         messages: []
-      }
+      };
 
-      this.insertNewClient(client)
-    }
+      this.insertNewClient(client);
+    };
 
     window.newMessage = (data) => {
       const chatId = data.chatId;
@@ -71,7 +44,7 @@ class ChatRoom extends React.Component {
       const text = data.text;
       const sentAt = data.sentAt;
 
-      this.insertNewMessage(chatId, author, type, text, sentAt)
+      this.insertNewMessage(chatId, author, type, text, sentAt);
     };
   }
 
@@ -83,8 +56,36 @@ class ChatRoom extends React.Component {
     this.scrollBottom();
   }
 
+  insertNewMessage(chatId, author, type, text, sentAt) {
+    const chatMessage = { author, type, text, sentAt };
+
+    const newChat = this.state.chats;
+    newChat[chatId].messages.push(chatMessage);
+
+    this.setState({ chats: newChat });
+  }
+
+  insertNewClient(clientData) {
+    const client = {
+      chatId: clientData.chatId,
+      firstname: clientData.firstname,
+      lastname: clientData.lastname,
+      messages: []
+    };
+
+    const chats = this.state.chats;
+    chats[clientData.chatId] = client;
+
+    this.setState({ chats });
+  }
+  
+  scrollBottom() {
+    const messageArea = document.getElementsByClassName('messages-container');
+    messageArea[0].scrollTop = messageArea[0].scrollHeight;
+  }
+
   changeActive(id) {
-    this.setState({activeId: id}, this.scrollBottom())
+    this.setState({ activeId: id }, this.scrollBottom());
   }
 
   newMessage(message) {
@@ -94,25 +95,22 @@ class ChatRoom extends React.Component {
     const text = message.message;
     const sentAt = message.sentAt;
 
-    socket.emit('sendTelegram', {chatId: activeChat, type: type, message: text});
+    socket.emit('sendTelegram', { type, chatId: activeChat, message: text });
 
     this.insertNewMessage(activeChat, author, type, text, sentAt);
-  }
-
-  scrollBottom() {
-    var messageArea = document.getElementsByClassName("messages-container");
-    messageArea[0].scrollTop = messageArea[0].scrollHeight;
   }
 
   render() {
     return (
       <div className="box columns column is-10 is-offset-1 telebot-app">
-        <ChatList chats={this.state.chats}
+        <ChatList
+          chats={this.state.chats}
           activeId={this.state.activeId}
           changeActive={this.changeActive}
           avatarPlaceholder={this.avatarPlaceholder}
         />
-        <MessagesPanel chats={this.state.chats}
+        <MessagesPanel
+          chats={this.state.chats}
           activeId={this.state.activeId}
           name={this.state.name}
           newMessage={this.newMessage}
@@ -120,7 +118,7 @@ class ChatRoom extends React.Component {
           avatarPlaceholder={this.avatarPlaceholder}
         />
       </div>
-    )
+    );
   }
 }
 
@@ -142,7 +140,7 @@ socket.on('populateChats', (data) => {
   } else {
 
     // Populate chats panel and messages
-    data.chats.forEach((chat, key) => {
+    data.chats.forEach((chat) => {
       chats[chat.chatId] = chat;
     });
 
@@ -151,7 +149,7 @@ socket.on('populateChats', (data) => {
       activeId: data.chats[0].chatId,
     };
 
-    require('../../../scripts/socketMethods');
+    require('../../../scripts/socketMethods'); // eslint-disable-line global-require
 
     ReactDOM.render(
       <ChatRoom chats={initialState} />,

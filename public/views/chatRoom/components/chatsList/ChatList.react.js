@@ -1,25 +1,18 @@
-/* eslint-disable */
+/* eslint no-undef:off, react/prop-types:off */
+
 
 const React = require('react');
 const ChatBox = require('./ChatBox.react');
-const cookieParser = require('cookie-parser');
 
 class ChatList extends React.Component {
 
-  constructor(props){
-    super(props);
-
-    // this.logout = this.logout.bind(this);
-  }
-
-  logout () {
-    console.log('token');
+  static logout() {
     const expire = new Date().getTime();
-    document.cookie = "token=;path=/;expires=" + expire;
+    document.cookie = `token=;path=/;expires=${expire}`;
     location.reload();
   }
 
-  hideContactsPanel() {
+  static hideContactsPanel() {
     const contactsPanel = document.getElementById('contactsPanel');
     contactsPanel.setAttribute('hidden', '');
   }
@@ -37,40 +30,53 @@ class ChatList extends React.Component {
       buttonShow = true;
     }
 
-    for (let key in chatList) {
-      let chat = chatList[key];
-      let lastKey = chat.messages.length - 1;
+    for (const key in chatList) {
+      const chat = chatList[key];
+      const lastKey = chat.messages.length - 1;
 
-      if (chat.messages[lastKey] != undefined) {
+      if (chat.messages[lastKey] !== undefined) {
         list.push(
-          <ChatBox key={key}
+          <ChatBox
+            key={key}
             id={+key}
             name={chat.firstname}
             sentAt={chat.messages[lastKey].sentAt}
             lastMessage={chat.messages[lastKey].message}
             activeId={this.props.activeId}
             changeActive={this.props.changeActive}
-            avatarPlaceholder={this.props.avatarPlaceholder}/>
-          )
-        }
+            avatarPlaceholder={this.props.avatarPlaceholder}
+          />
+        );
       }
-
-      return (
-        <div className={divClass}>
-          <p className="panel-heading chat-list-heading">
-            <button className="no-button menu-button" onClick={() => this.logout()}><img src="/img/logout-white.svg" className="header-img"></img></button>
-            Contacts
-            { buttonShow ?
-                <button className="no-button menu-button close-contacts" onClick={() => this.hideContactsPanel()}>&times;</button>
-                : ''
-            }
-          </p>
-          <div className="chat-list-overflow">
-            {list}
-          </div>
-        </div>
-      )
     }
-  }
 
-  module.exports = ChatList
+    return (
+      <div className={divClass}>
+        <p className="panel-heading chat-list-heading">
+          <button
+            className="no-button menu-button"
+            onClick={() => this.logout()}>
+            <img
+              src="/img/logout-white.svg"
+              alt="logout"
+              className="header-img"
+            />
+          </button>
+          Contacts
+          { buttonShow ?
+            <button
+              className="no-button menu-button close-contacts"
+              onClick={() => this.hideContactsPanel()}>
+              &times;
+            </button> : ''
+          }
+        </p>
+        <div className="chat-list-overflow">
+          {list}
+        </div>
+      </div>
+    );
+  }
+}
+
+module.exports = ChatList;

@@ -15,7 +15,7 @@ auth.use(cookieParser());
 // const tokenExchangeBaseUrl = ;
 
 // Check if user can access chatRoom on request
-auth.get('/views/chatRoom', (req, res, next) => {
+auth.get('/views', (req, res, next) => {
   // Check token cookie
   if (req.cookies && req.cookies.token) {
 

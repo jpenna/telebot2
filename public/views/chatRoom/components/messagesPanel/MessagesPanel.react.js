@@ -1,30 +1,34 @@
+/* eslint react/prop-types:off */
+
 const React = require('react');
 const HeaderContainer = require('./HeaderContainer.react');
 const MessagesContainer = require('./MessagesContainer.react');
 const InputContainer = require('./InputContainer.react');
 const ChatList = require('../chatsList/ChatList.react');
 
-class MessagesPanel extends React.Component {
+const MessagesPanel = function (props) {
 
-  render() {
-    return (
-      <div className="column is-9 messages-panel">
-        <HeaderContainer firstname={this.props.chats[this.props.activeId].firstname}
-          lastname={this.props.chats[this.props.activeId].lastname} />
-        <MessagesContainer chats={this.props.chats} activeId={this.props.activeId}
-          avatarPlaceholder={this.props.avatarPlaceholder}/>
-        <InputContainer newMessage={this.props.newMessage} />
-        <div id="contactsPanel" className="is-hidden-tablet chat-list-menu" hidden="true">
-          <ChatList
-            chats={this.props.chats} activeId={this.props.activeId}
-            showMobile={true}
-            changeActive={this.props.changeActive}
-            avatarPlaceholder={this.props.avatarPlaceholder}
-          />
-        </div>
-      </div>
-    )
-  }
-}
+  return <div className="column is-9 messages-panel">
+    <HeaderContainer
+      firstname={props.chats[props.activeId].firstname}
+      lastname={props.chats[props.activeId].lastname}
+    />
+    <MessagesContainer
+      chats={props.chats}
+      activeId={props.activeId}
+      avatarPlaceholder={props.avatarPlaceholder}
+    />
+    <InputContainer newMessage={props.newMessage} />
+    <div id="contactsPanel" className="is-hidden-tablet chat-list-menu" hidden="true">
+      <ChatList
+        showMobile
+        chats={props.chats}
+        activeId={props.activeId}
+        changeActive={props.changeActive}
+        avatarPlaceholder={props.avatarPlaceholder}
+      />
+    </div>
+  </div>;
+};
 
-  module.exports = MessagesPanel;
+module.exports = MessagesPanel;

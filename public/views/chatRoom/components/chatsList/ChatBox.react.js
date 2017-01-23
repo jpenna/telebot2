@@ -1,5 +1,4 @@
-/* eslint-disable */
-
+/* eslint react/prop-types:off */
 
 const React = require('react');
 
@@ -24,7 +23,7 @@ class ChatBox extends React.Component {
     const isThisActive = this.props.activeId === this.props.id;
 
     let buttonClass = 'panel-block no-button preview-button';
-    isThisActive ? buttonClass += ' active-chat' : '';
+    buttonClass += isThisActive ? ' active-chat' : '';
 
     this.state.buttonClass = buttonClass;
   }
@@ -37,55 +36,64 @@ class ChatBox extends React.Component {
     const today = new Date().setHours(0, 0, 0, 0);
     const sendDate = new Date(this.props.sentAt).setHours(0, 0, 0, 0);
 
-    if (today == sendDate) {
-      sentAt = new Date(this.props.sentAt).toLocaleString("pt-BR", {
+    if (today === sendDate) {
+      sentAt = new Date(this.props.sentAt).toLocaleString('pt-BR', {
         hour: 'numeric',
         minute: 'numeric',
       });
     } else if (today - sendDate < 86401000) {
-      sentAt = "Ontem";
-    } else if (today - sendDate < 7*86401000) {
-      sentAt = new Date(this.props.sentAt).toLocaleString("pt-BR", {
+      sentAt = 'Ontem';
+    } else if (today - sendDate < 7 * 86401000) {
+      sentAt = new Date(this.props.sentAt).toLocaleString('pt-BR', {
         weekday: 'short',
       });
 
       sentAt = sentAt.charAt(0).toUpperCase() + sentAt.slice(1);
 
     } else {
-      sentAt = new Date(this.props.sentAt).toLocaleString("pt-BR", {
+      sentAt = new Date(this.props.sentAt).toLocaleString('pt-BR', {
         day: 'numeric',
         month: 'numeric',
       });
     }
 
     return (
-      <button className={this.state.buttonClass}
+      <button
+        className={this.state.buttonClass}
         onClick={() => this.changeActive(this.props.id)}>
         <div className="media">
           <figure className="media-left">
             <p className="image is-50x50">
-              <img className="avatar-image is-50x50" src={`/img/avatars/${this.props.id}.jpg`}
-              ref = { img => this.chatAvatar = img }
-            />
-          </p>
-        </figure>
-        <div className="media-content">
-          <div className="content">
-            <div className="level is-mobile">
-              <div className="level-left">
-                <p className="level-item preview-name">{this.props.name}</p>
+              <img
+                className="avatar-image is-50x50"
+                src={`/img/avatars/${this.props.id}.jpg`}
+                alt="Profile"
+                ref={(img) => { this.chatAvatar = img; }}
+                onError={() => {
+                  if (this.chatAvatar.src !== this.props.avatarPlaceholder) {
+                    this.chatAvatar.src = this.props.avatarPlaceholder;
+                  }
+                }}
+              />
+            </p>
+          </figure>
+          <div className="media-content">
+            <div className="content">
+              <div className="level is-mobile">
+                <div className="level-left">
+                  <p className="level-item preview-name">{this.props.name}</p>
+                </div>
+                <div className="level-right">
+                  <small className="level-item preview-time">{sentAt}</small>
+                </div>
               </div>
-              <div className="level-right">
-                <small className="level-item preview-time">{sentAt}</small>
-              </div>
+              <p className="preview-text">{this.props.lastMessage}</p>
             </div>
-            <p className="preview-text">{this.props.lastMessage}</p>
           </div>
         </div>
-      </div>
-    </button>
-  )
-}
+      </button>
+    );
+  }
 }
 
 module.exports = ChatBox;

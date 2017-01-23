@@ -44,6 +44,7 @@ bot.text((msg, reply) => {
         .then(() => {
           // Then repeat and send NEW CHAT to web
           saveMessage();
+          utils.getUserAvatar(chatId);
           web.newChat(chatId, chatType, firstname, lastname);
         });
       } else {

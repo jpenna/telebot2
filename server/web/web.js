@@ -28,7 +28,6 @@ const web = {
 
     io.emit('newChat', chatData);
   },
-
 };
 
 io.on('connection', (socket) => {
