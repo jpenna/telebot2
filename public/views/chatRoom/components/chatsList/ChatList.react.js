@@ -6,13 +6,13 @@ const ChatBox = require('./ChatBox.react');
 
 class ChatList extends React.Component {
 
-  static logout() {
+  logout() {
     const expire = new Date().getTime();
     document.cookie = `token=;path=/;expires=${expire}`;
     location.reload();
   }
 
-  static hideContactsPanel() {
+  hideContactsPanel() {
     const contactsPanel = document.getElementById('contactsPanel');
     contactsPanel.setAttribute('hidden', '');
   }

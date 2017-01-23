@@ -21,7 +21,7 @@ socket.on('newMessage', (msgData) => {
     chatId: msgData.chatId,
     author: msgData.author,
     type: msgData.type,
-    text: msgData.message,
+    message: msgData.message,
     sentAt: msgData.sentAt
   };
 

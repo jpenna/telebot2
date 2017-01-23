@@ -10,13 +10,8 @@ auth.use(bodyParser.urlencoded({ extended: false }));
 auth.use(bodyParser.json());
 auth.use(cookieParser());
 
-// // var csrf_guid = Guid.raw();
-// const meEndpointBaseUrl = ;
-// const tokenExchangeBaseUrl = ;
-
 // Check if user can access chatRoom on request
-auth.get('/views', (req, res, next) => {
-
+auth.get('/views/chatRoom', (req, res, next) => {
   // Check token cookie
   if (req.cookies && req.cookies.token) {
 
@@ -31,13 +26,13 @@ auth.get('/views', (req, res, next) => {
           return next();
         }
         res.set('x-authorization', 'Token expired')
-        .redirect(401, '/views/login');
+        .redirect(303, '/views/login');
 
 
       } else {
         // No user found or token expired
         res.set('x-authorization', 'No user found')
-        .redirect(401, '/views/login');
+        .redirect(303, '/views/login');
 
       }
     });
@@ -45,7 +40,7 @@ auth.get('/views', (req, res, next) => {
   } else {
     // No cookie token
     res.set('x-authorization', 'No token cookie')
-    .redirect(401, '/views/login');
+    .redirect(303, '/views/login');
   }
 
 });
@@ -86,30 +81,32 @@ auth.post('/sendcode', (request, response) => {
           User.insertUser(id, email, token, expiration);
         } else {
           // Remove and insert with new data
-          User.removeUser(id);
-          User.insertUser(id, email, token, expiration)
-          .then(() => {
+          User.removeUser(id).then(() => {
+            User.insertUser(id, email, token, expiration)
+            .then(() => {
+              // Set cookie for persistent login session
+              response.cookie('token', token, { expires: new Date(expiration) });
 
-            // Set cookie for persistent login session
-            console.log('setCookie', request.body.code);
-            response.cookie('token', token, { expires: new Date(expiration) });
+              // Send user to chatRoom page
+              response.writeHead(302, {
+                Location: 'views/chatRoom',
+                'x-auth': res.data.access_token,
+              });
 
-            // Send user to chatRoom page
-            response.writeHead(302, {
-              Location: 'views/chatRoom',
-              'x-auth': res.data.access_token,
+              response.end();
             });
 
-            response.end();
-
-          }).catch((err) => { throw new Error('Insert user:', err); });
+          }).catch((err) => { console.log('Find user:', err); });
         }
-      }).catch((err) => { throw new Error('Find user by ID:', err); });
-    }).catch((err) => { throw new Error('FB /ME ERROR:', err); });
+      }).catch((err) => { console.log('Find user by ID:', err); });
+    }).catch((err) => { console.log('FB /ME ERROR:', err); });
   }).catch((err) => {
     console.log('FB auth:', err);
     response.send('Something went wrong.\nSorry, sir.');
   });
+  // if (!response.headersSent) {
+  //   next();
+  // }
 });
 
 module.exports = { auth };

@@ -41,7 +41,7 @@ class ChatRoom extends React.Component {
       const chatId = data.chatId;
       const author = data.author;
       const type = data.type;
-      const text = data.text;
+      const text = data.message;
       const sentAt = data.sentAt;
 
       this.insertNewMessage(chatId, author, type, text, sentAt);
@@ -56,8 +56,8 @@ class ChatRoom extends React.Component {
     this.scrollBottom();
   }
 
-  insertNewMessage(chatId, author, type, text, sentAt) {
-    const chatMessage = { author, type, text, sentAt };
+  insertNewMessage(chatId, author, type, message, sentAt) {
+    const chatMessage = { author, type, message, sentAt };
 
     const newChat = this.state.chats;
     newChat[chatId].messages.push(chatMessage);

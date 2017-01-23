@@ -4,7 +4,7 @@ const React = require('react');
 
 class HeaderContainer extends React.Component {
 
-  static openContacts() {
+  openContacts() {
     const contactsPanel = document.getElementById('contactsPanel');
     contactsPanel.removeAttribute('hidden');
   }

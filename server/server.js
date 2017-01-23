@@ -13,7 +13,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 // if inexistant path
 app.use((req, res) => {
-  res.redirect(404, '/views/login');
+  res.redirect(303, '/views/login');
 });
 
 server.listen(process.env.PORT);
