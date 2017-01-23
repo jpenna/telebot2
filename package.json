@@ -2,7 +2,11 @@
   "name": "telebot2",
   "version": "0.0.1",
   "description": "Bot interface for Telegram messaging application",
-  "keywords": ["telegram", "telegram bot", "chat bot"],
+  "keywords": [
+    "telegram",
+    "telegram bot",
+    "chat bot"
+  ],
   "bugs": "https://github.com/jpenna/telebot2/issues",
   "main": "server/server.js",
   "engines": {
@@ -10,11 +14,11 @@
   },
   "scripts": {
     "start": "export NODE_ENV=dev || SET \"NODE_ENV=dev\" && node server/server.js",
+    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha ./server/tests/**/*.test.js",
+    "test-watch": "nodemon --exec 'npm test'",
     "build": "webpack",
     "build-min": "webpack -p",
-    "sass": "sass --watch public/styles/sass:public/styles/css",
-    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha ./server/tests/**/*.test.js",
-    "test-watch": "nodemon --exec 'npm test'"
+    "sass": "sass --watch public/styles/sass:public/styles/css"
   },
   "author": "Juliano Penna <julianopenna@gmail.com>",
   "license": "ISC",
@@ -45,8 +49,8 @@
     "eslint-plugin-react": "^6.9.0",
     "expect": "^1.20.2",
     "mocha": "^3.2.0",
-    "webpack": "^1.14.0",
     "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "webpack": "^1.14.0"
   }
 }
