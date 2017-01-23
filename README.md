@@ -6,13 +6,15 @@ Chatbot for Telegram.
 1. Start MongoDB
 2. Set the configuration variables at `config.json`
 3. Run `npm start` from root path
-4. Access `/views/login` with a HTTPS protocol (try **ngrok** for tunneling)
-5. Login
+4. Access `/views/login` over a HTTPS protocol (try **ngrok** for tunneling)
+5. Login (set Facebook Account Kit Ser URLs to allow the HTTPS address you are using)
 6. Talk
 
 ### Configuration
 
-Configuration variables are set in config.json, which has:
+Configuration variables are set in config.json.
+
+Use the `config-sample.json` to set your variables and rename it to `config.json`.
 
 a `dev` property for development variable,
 
@@ -40,6 +42,11 @@ and `default` property for shared environment variables.
   }
 }
 ````
+
+## Tests
+
+To run tests enter `npm test` or `npm run test-watch` (nodemon watch).
+
 ---
 
 ### Next Steps
